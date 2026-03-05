@@ -18,36 +18,30 @@
 \noplagiarism % PLEASE DON'T DELETE THIS LINE!
 %%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
-  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
-  %   \begin{itemize}
-  %     \item
-  %   \end{itemize}}}}
-  % \end{center}
+  \mfig{width = 1.00\textwidth}{figs/problem-answer}
+  \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+    \begin{itemize}
+      \item 如果你表达不清楚, 那么你就不理解;
+      \item 你是你的证明的第一责任人, 你要对它负全责;
+    \end{itemize}}}}
+  \end{center}
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%
 \beginrequired
 %%%%%%%%%%%%%%%
-\begin{problem}[Nim Game \score{6 = 1 + 2 + 2 + 1}]
-  Nim 是一个双人游戏 (你可以在 Ludii Player 里找到它)。
-  游戏开始时，两人面前放着几堆石头，
-  两个玩家轮流操作，每次选择从某个石堆里拿走一块或多块石头。
-  最后没有石头可拿的那个玩家输掉比赛。
+\begin{problem}[稳定婚姻问题]
+  请尽可能清晰地描述教师在课堂上口述的 Gale-Shapley 稳定婚姻算法, 并尝试证明:
+  \begin{itemize}
+    \item 该算法终将结束;
+    \item 该算法得到的匹配是稳定的。
+  \end{itemize}
+  请考虑, 该算法更偏向于男方还是女方? 你会如何定义``偏向性''?
+  又如何证明该算法确实具有某种偏向性?
 
-  \fig{width = 0.40\textwidth}{figs/nim-stone}
-
-  本题将引导大家寻找该游戏的必胜策略。
-
-  考虑对石头堆里的石头个数(二进制表示下的; 不足时高位补0)做异或操作($\oplus$)，
-  结果称为 Nim 和。
-
-  \begin{enumerate}[(1)]
-    \item 请证明: 若 Nim 和为０, 则任意一次移动都会导致 Nim 和不为 0。
-    \item 请证明: 若 Nim 和不为0，则必然存在一个石头堆，它的石头数大于其它所有石头堆的 Nim 和。
-      (统一在二进制或十进制下进行大小比较)
-    \item 请证明: 若游戏开始时, Nim 和不为 0，则先手有必胜策略。
-    \item 在只有两堆石头的情况下，请给出某玩家有必胜策略的充要条件与他/她的必胜策略。
-  \end{enumerate}
+  \vspace{0.30cm}
+  {\it 提示: 本题并不要求你给出完美的解答。
+  我们的目标是让你体会什么是``清晰的表达''与``严格的证明''。
+  \blue{你可以与 \textup{AI} 交互}, 不断修改你的解答, 直到你认为它已足够清晰、严谨。}
 \end{problem}
 
 \begin{solution}
