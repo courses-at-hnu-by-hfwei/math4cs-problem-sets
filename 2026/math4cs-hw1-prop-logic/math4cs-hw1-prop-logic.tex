@@ -1,0 +1,213 @@
+% hw1-prop-logic.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (1-prop-logic: 命题逻辑)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年3月12日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+\begin{problem}[命题逻辑公式上的数学归纳法]
+  假设公式 $\alpha$ 中不含 ``$\lnot$'' 符号。
+  请证明, $\alpha$ 中超过四分之一的符号是命题符号。
+
+  ({\it 提示: 公式的长度定义见课件。})
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[命题逻辑公式的语义]
+  请找出所有满足以下公式的真值指派:
+  \begin{enumerate}[(1)]
+    \item $\alpha: (A_{1} \to A_{2}) \land (A_{2} \to A_{3})
+      \land \cdots \land (A_{n-1} \to A_{n})$
+    \item $\beta: \alpha \land (A_{n} \to A_{1})$
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[重言蕴含]
+  请利用重言式证明:
+  \[
+    \set{\alpha \to \beta} \models
+      (\gamma \to \alpha) \to (\gamma \to \beta).
+  \]
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[合取范式与析取范式]
+  我们先引入一个定义。
+
+  \begin{definition}[合取范式 (Conjunctive Normal Form; CNF)]
+    \label{def:cnf}
+    我们称公式 $\alpha$ 是\red{\bf 合取范式}, 如果它形如
+    \[
+      \alpha = \beta_{1} \land \beta_{2} \land \dots \land \beta_{k},
+    \]
+    其中, 每个 $\beta_{i}$ 都形如
+    \[
+      \beta_{i} = \beta_{i1} \lor \beta_{i2} \lor \dots \lor \beta_{in},
+    \]
+    并且 $\beta_{ij}$ 或是一个命题符号, 或是命题符号的否定。
+  \end{definition}
+
+  例如, 下面的公式就是一个合取范式。
+  \[
+    (P \lor \lnot Q \lor R) \;\red{\land}\; (\lnot P \lor Q) \;\red{\land}\; \lnot Q
+  \]
+
+  将定义~\ref{def:cnf} 中的所有$\land$换成$\lor$, 所有$\lor$换成$\land$, 其余不变,
+  就变成了析取范式 (Disjunctive Normal Form; DNF)的定义。本题以CNF为例。
+
+  将任意公式转化成CNF或DNF的方法如下:
+  \begin{enumerate}[(1)]
+    \item 先将公式中的联词化归成 $\lnot$, $\land$ 与 $\lor$;
+    \item 再使用 De Morgan 律将 $\lnot$ 移到各个命题变元之前 (\blue{``否定深入''});
+    \item 最后使用结合律、分配律将公式化归成合取范式或析取范式。
+  \end{enumerate}
+
+  请将
+  \[
+    (P \land (Q \to R)) \to S
+  \]
+  化为合取范式。
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[命题逻辑的自然推理系统]
+  请使用自然推理规则证明以下结论:
+
+  {提示: 你可以使用 \LaTeX{} package `logicproof' 书写漂亮的证明。}
+  \begin{enumerate}[(1)]
+    \item
+      \[
+        p  \to (q \to r) \vdash (p \land q) \to r
+      \]
+    \item
+      \[
+        (p \land q) \lor r \vdash (p \lor r) \land (q \lor r)
+      \]
+    \item
+      \[
+        (p \lor r) \land (q \lor r) \vdash (p \land q) \lor r
+      \]
+    \item
+      \[
+        \vdash \alpha \to (\beta \to \alpha)
+      \]
+    \item
+      \[
+        \vdash (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
+      \]
+    \item
+      \[
+        \vdash (\lnot \beta \to \lnot \alpha) \to ((\lnot \beta \to \alpha) \to \beta)
+      \]
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\beginoptional
+
+%%%%%%%%%%%%%%%
+\begin{problem}[命题逻辑的自然推理系统]
+  请使用自然推理规则 (非 derived rules) 证明排中律:
+  \[
+    \vdash \alpha \lor \lnot\alpha
+  \]
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[Build with AI]
+  利用 AI 工具（如 Google AI Studio, Google Gemini,
+  ChatGPT, Codex, Claude Code, Kimi 等）
+  实现一个以``命题逻辑的自然推理系统''为主题的网页或应用程序。
+
+  具体形式不限，可以是一个交互式的证明助手，
+  也可以是证明通关游戏，等等。
+
+  可以多人合作完成，提交时请注明参与者姓名。
+
+  提交内容包括：
+  \begin{itemize}
+    \item 项目名称
+    \item 项目作者
+    \item 项目链接（如 GitHub 仓库链接，或在线应用链接）
+    \item 项目截图（至少一张展示核心功能的截图）
+    \item 项目简介（功能介绍，使用说明等）
+    \item 与 AI 工具的核心对话记录
+    \item 可选: 开发心得（开发过程中遇到的挑战、解决方案、感悟、AI 工具的表现等）
+    \item 可选：项目演示视频链接（如 Bilibili 视频链接）
+    \item 其它, 由你决定
+  \end{itemize}
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
