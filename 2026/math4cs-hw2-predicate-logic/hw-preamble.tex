@@ -19,7 +19,7 @@
 \newcommand{\teal}[1]{\textcolor{teal}{#1}}
 
 \usepackage{todonotes}
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}
 
 % heading
 \usepackage{sectsty}
@@ -35,6 +35,10 @@
 \usepackage{fontspec}
 \newcommand{\song}{\CJKfamily{song}}
 \newcommand{\kai}{\CJKfamily{kai}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
 
 % To fix the ``MakeTextLowerCase'' bug:
 % See https://github.com/Tufte-LaTeX/tufte-latex/issues/64#issuecomment-78572017
@@ -83,7 +87,7 @@
 
 % Each hw consists of four parts:
 \newcommand{\beginrequired}{\hspace{5em}\section{作业 (必做部分)}}
-\newcommand{\beginoptional}{\section{作业 (选做部分; 不计分)}}
+\newcommand{\beginoptional}{\section{作业 (选做部分)}}
 \newcommand{\beginot}{\section{Open Topics}}
 \newcommand{\begincorrection}{\section{订正}}
 \newcommand{\beginfb}{\section{反馈}}
@@ -194,12 +198,3 @@
 \renewcommand\thefootnote{\protect\circled{\arabic{footnote}}}
 
 \newcommand{\score}[1]{{\bf [#1 分]}}
-
-\usepackage{logicproof}
-
-\newcommand{\intro}{\ensuremath{\text{-intro}}\;}
-\newcommand{\introleft}{\ensuremath{\text{-intro}_{l}}\;}
-\newcommand{\introright}{\ensuremath{\text{-intro}_{r}}\;}
-\newcommand{\elim}{\ensuremath{\text{-elim}}\;}
-\newcommand{\elimleft}{\ensuremath{\text{-elim}_{l}}\;}
-\newcommand{\elimright}{\ensuremath{\text{-elim}_{r}}\;}

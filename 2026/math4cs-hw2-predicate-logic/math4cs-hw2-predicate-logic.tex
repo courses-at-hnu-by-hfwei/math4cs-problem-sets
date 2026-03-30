@@ -1,0 +1,154 @@
+% hw2-predicate-logic.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (2-predicate-logic: 一阶谓词逻辑)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年3月19日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  \fig{width = 0.50\textwidth}{figs/irreplaceable}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 自由出现、约束出现、替换、无冲突替换]
+  针对以下两个公式 $\alpha$ 和 $\beta$,
+  \begin{enumerate}[(1)]
+    \item $\alpha: \forall x\; (P(x) \to \exists y\; Q(x, y))
+      \to (\exists z\; R(x, y, z))$
+    \item $\beta: (x = y) \to \forall z\; (R(x, z) \land R(y, z))$
+  \end{enumerate}
+  分别回答以下问题:
+  \begin{enumerate}[(a)]
+    \item 请找出公式中变元 $x$ 的自由出现与约束出现。
+    \item 请给出 $\alpha[y/x]$、$\alpha[z/x]$、
+      $\beta[y/x]$、$\beta[z/x]$。
+    \item 请判断以上四个替换是否为无冲突替换, 并说明理由。
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 替换]
+  请证明, 对于任意公式 $\alpha$ 与其中的任意变元 $x$,
+  $x$ 都可以在 $\alpha$ 中无冲突地替换自己。
+
+  \noindent (提示: 虽然该结论看上去很显然, 但请考虑如何以规范的方式证明它。
+  你不能说 ``显然成立'' 或 ``不难看出'' 等等。)
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 语义等价]
+  在数学分析中, 极限的定义如下:
+
+  $\lim\limits_{x \to a} f(x) = l$ 当且仅当
+  \[
+    \forall \epsilon \in \R^{+}\; \exists \delta \in \R^{+}\;
+      \forall x\; (0 < |x - a| < \delta \to |f(x) - l| < \epsilon).
+  \]
+  请写出 $\lim\limits_{x \to a} f(x) \neq l$ 的定义。
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 普遍有效的公式]
+  在课堂上, 我们指出公式
+  \[
+    \forall x\; (\alpha \land \beta)
+      \leftrightarrow (\forall x\; \alpha) \land \beta
+  \]
+  在 ``$x$ 在 $\beta$ 中不自由出现'' 的前提下是普遍有效的。
+
+  \noindent 请证明, 如果 ``$x$ 在 $\beta$ 中自由出现'',
+  则上述公式不再是普遍有效的。
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 前束范式]
+  对于任意的命题逻辑公式,
+  我们在上次作业中介绍了如何将其化归成合取范式或析取范式。
+  类似地, 对于任意的一阶谓词逻辑公式,
+  我们也可以将其化归成前束范式 (prenex normal form),
+  即``所有量词都出现在公式最前面''的形式。
+
+  准确地说, 称具有以下形式的公式为前束范式:
+  \[
+    Q_1 x_1\; Q_2 x_2\; \cdots\; Q_n x_n\; \alpha
+  \]
+  其中, 每个 $Q_i$ 都是 $\forall$ 或 $\exists$,
+  并且 $\alpha$ 中无量词。
+
+  可以利用下列规则进行量词操作, 将任意的一阶谓词逻辑公式化归成前束范式:
+  \begin{enumerate}[label = \textbf{R\arabic*}]
+    \item $\lnot \forall x\; \alpha \equiv \exists x\; \lnot \alpha$;
+    \item $\lnot \exists x\; \alpha \equiv \forall x\; \lnot \alpha$;
+    \item $\alpha \to \forall x\; \beta \equiv \forall x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\alpha$ 中自由出现;
+    \item $\alpha \to \exists x\; \beta \equiv \exists x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\alpha$ 中自由出现;
+    \item $(\forall x\; \alpha) \to \beta \equiv \exists x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\beta$ 中自由出现;
+    \item $(\exists x\; \alpha) \to \beta \equiv \forall x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\beta$ 中自由出现.
+  \end{enumerate}
+
+  请利用以上规则将以下公式化归成前束范式,
+  并给出每一步使用的规则:
+  \[
+    \forall x\; \exists y\; P(x, y) \to \exists x\; Q(x).
+  \]
+
+  (提示: 答案可能不唯一)
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}

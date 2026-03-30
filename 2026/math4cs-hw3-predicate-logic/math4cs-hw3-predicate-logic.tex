@@ -1,0 +1,140 @@
+% hw2-predicate-logic.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (2-predicate-logic: 一阶谓词逻辑 II)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年3月30日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 模型与语义]
+  考虑一阶谓词逻辑逻辑的闭公式 (也称为语句; sentence)：
+  \[
+    \phi \triangleq \forall x\; \exists y\; \exists z\;
+      (P(x, y) \land P(z, y) \land (P(x, z) \to P(z, x)))
+  \]
+  以下哪些模型 $\mathcal{M}$ 满足 $\phi$? 请给出理由。
+  \begin{enumerate}[(1)]
+    \item $\mathcal{M}_{1}$:
+      $|\mathcal{M}| \triangleq \mathbb{N}$,
+      $P^{\mathcal{M}} \triangleq \{(x, y) \mid x < y\}$.
+    \item $\mathcal{M}_{2}$:
+      $|\mathcal{M}| \triangleq \mathbb{N}$,
+      $P^{\mathcal{M}} \triangleq \{(x, y) \mid x < y + 1\}$.
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 形式化描述与推理]
+  请使用一阶谓词逻辑公式描述以下两个定义,
+  并从逻辑推理的角度说明这两种定义之间是否有强弱之分
+  （可以使用``重言式''进行公式转换）。
+  \noindent {(要求: 需给出关键的推理步骤或理由)}
+
+  A function $f$ from $\mathbb{R}$ to $\mathbb{R}$ is called
+  \begin{enumerate}[(1)]
+    \setlength{\itemsep}{10pt}
+    \item \blue{\it pointwise continuous} (连续的) if
+      for every $x \in \mathbb{R}$
+      and every real number $\epsilon > 0$,
+      there exists real $\delta > 0$ such that
+      for every $y \in \mathbb{R}$ with $|x - y| < \delta$,
+      we have that $|f(x) -  f(y)|< \epsilon$.
+    \item \blue{\it uniformly continuous} (一致连续的) if
+      for every real number $\epsilon > 0$,
+      there exists real $\delta > 0$ such that
+      for every $x, y \in \mathbb{R}$ with $|x - y| < \delta$,
+      we have that $|f(x) -  f(y)|< \epsilon$.
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 自然推理系统]
+  给定如下``前提'', 请判断``结论''是否有效。
+  请在一阶谓词逻辑的自然推理系统中完成。
+
+  {\bf 前提:}
+  \begin{enumerate}[(1)]
+    \item 每个人或者喜欢美剧, 或者喜欢韩剧 (可以同时喜欢二者);
+    \item 任何人如果他喜欢抗日神剧, 他就不喜欢美剧;
+    \item 有的人不喜欢韩剧。
+  \end{enumerate}
+
+  \vspace{0.20cm}
+  \noindent {\bf 结论:} 有的人不喜欢抗日神剧 ({\it 幸亏如此})。
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[一阶谓词逻辑: 自然推理系统]
+  请使用一阶谓词逻辑的自然推理系统证明:
+  \begin{enumerate}[(1)]
+    \item $\forall x.\; (P(x) \to Q(x)) \vdash
+      (\forall x.\; \lnot Q(x)) \to (\forall x\; \lnot P(x))$
+    \item $\forall x\; (\phi \land \psi) \vdash
+      (\forall x\; \phi) \land (\forall x\; \psi)$
+    \item $(\exists x\; \phi) \lor (\exists x\; \psi) \vdash
+      \exists x\; (\phi \lor \psi)$
+    \item $\forall x\; \forall y\; \phi \vdash \forall y\; \forall x\; \phi$
+    \item $\exists x\; \exists y\; \phi \vdash
+      \exists y\; \exists x\; \phi$
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
