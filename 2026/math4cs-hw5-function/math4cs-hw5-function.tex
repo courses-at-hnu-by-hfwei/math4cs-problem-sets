@@ -1,0 +1,95 @@
+% math4cs-hw5-function.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (5-function: 函数)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年4月9日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+% \begin{abstract}
+% \end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[$f$ 与 $f^{-1}$]
+  设 $f: A \to B$ 是函数。请证明:
+  \begin{enumerate}[(1)]
+    \item $f(A_1 \cup A_2) = f(A_1) \cup f(A_2)$
+    \item $f^{-1}(B_1 \setminus B_2) = f^{-1}(B_1) \setminus f^{-1}(B_2)$
+    \item $B_0 \supseteq f(f^{-1}(B_0))$
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[$g \circ f$]
+  设 $f: A \to B$ 与 $g: B \to C$ 是函数。
+  请证明,
+  \begin{enumerate}[(1)]
+    \item 如果 $f$ 与 $g$ 是满射, 则 $g \circ f$ 是满射。
+    \item 如果 $g \circ f$ 是单射, 则 $f$ 是单射。
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[反函数]
+  设 $f: A \to B$ 与 $g: B \to A$ 是函数。
+  请证明, \footnote{可以在下周二课程后证明, 当然也可以现在证明。}
+  \[
+    (f \circ g = I_B \land g \circ f = I_A) \to g = f^{-1}.
+  \]
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[函数与等价关系]
+  设 $f: X \to Y$ 是满射。
+  定义 $X$ 上的二元关系 $R$ 为 $(x, y) \in R$ 当且仅当 $f(x) = f(y)$。
+  请证明,
+  \begin{enumerate}[(1)]
+    \item $R$ 是 $X$ 上的等价关系。
+    \item 定义 $h \subseteq (X/R) \times Y$ 为 $h([x]_{R}) = f(x)$。
+      请证明, $h$ 是从商集 $X/R$ 到 $Y$ 的函数, 且是满射。
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
