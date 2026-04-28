@@ -1,0 +1,157 @@
+% math4cs-hw6-ordering.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (7-ordering: 序关系)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年4月17日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[拟序、等价关系、偏序]
+  一个自反且传递的二元关系 $R \subseteq X \times X$
+  称为 $X$ 上的拟序 (或预序)。
+  \footnote{
+    The name {\it preorder} is meant to suggest that
+    preorders are {\it almost} partial orders,
+    but not quite, as they are not necessarily antisymmetric.
+  }
+
+  现令 $\preceq\; \subseteq X \times X$ 为拟序。
+
+  \begin{enumerate}[(1)]
+    \item 如下定义 $X$ 上的关系 $\sim$:
+      \[
+        x \sim y \triangleq x \preceq y \land y \preceq x.
+      \]
+      请证明~\footnote{你在 \textsl{hw4} 中已经做过这个证明了,
+      不必重做。可以直接在第二问中使用该结论。}, $\sim$ 是 $X$ 上的等价关系。
+      \footnote{Each preorder induces an {\it equivalence relation}
+        between elements according to $\sim$,
+        which is similar to the {\it antisymmetric} property.}
+    \item 如下定义商集 $X/\sim$ 上的关系 $\le$:
+      \[
+        [x]_{\sim} \le [y]_{\sim} \triangleq x \preceq y.
+      \]
+      请证明, $\le$ 是偏序关系。
+      \footnote{Preorders can be turned into partial orders
+        by identifying all elements that are equivalent
+        with respect to $\sim$.}
+    \item 接下来考虑整数集合 $\Z$ 上的整除关系 $\mid$。
+      \begin{itemize}
+        \item 请证明, $\mid$ 是一个拟序。
+        \item 请给出元素 $x \in \Z$ 的等价类 $[x]_{\sim}$。
+        \item 请描述商集 $\Z/\sim$ 上的偏序关系 $\le$。
+        \item 请说明, 等价关系 $\sim$ 提供了什么样的``抽象''?
+      \end{itemize}
+    \item 接下来考察有向图 $G = (V, E)$ 上~\footnote{
+        $V$ 是顶点集合, $E \subseteq V \times V$ 是边集合。}
+        \mfig{width = 0.90\textwidth}{figs/scc}
+      的可达关系 $\leadsto$。
+      \footnote{对于 $v, w \in V$, $v \leadsto w$ 表示存在一条从 $v$ 到 $w$ 的路径。}
+      \begin{itemize}
+        \item 请证明, $\leadsto$ 是一个拟序。
+        \item 请给出顶点 $v \in V$ 的等价类 $[v]_{\sim}$。
+        \item 请描述商集 $V/\sim$ 上的偏序关系 $\le$。
+        \item 请说明, 等价关系 $\sim$ 提供了什么样的``抽象''?
+      \end{itemize}
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[偏序]
+  令 $X, Y$ 为集合, 定义
+  \[
+    Fn(X, Y) = \bigcup_{Z \subseteq X} Y^Z.
+  \]
+  即, $Fn(X, Y)$ 是由 $X$ 的子集到 $Y$ 的所有函数组成的集合。
+
+  \noindent 请证明, $\subseteq$ 是 $Fn(X, Y)$ 上的偏序关系。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[上确界、下确界]
+  令 $X \neq \emptyset$。
+  在课堂上, 我们已经证明 $(\pow{X}, \subseteq)$ 是偏序集。
+
+  \noindent 请给出任意 $S \subseteq \pow{X}$ 的上确界与下确界的表达式
+  (无需证明)。
+\end{problem}
+
+\begin{solution}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[集合划分与精化关系]
+  令 $X \neq \emptyset$ 为任意集合。
+  令 $Pt(X)$ 表示 $X$ 的所有划分组成的集合。
+
+  \noindent 如下定义 $Pt(X)$ 上的精化 (refinement) 关系 $\le$:
+  \[
+    \alpha \le \beta \iff
+      \forall A \in \alpha\; \exists B \in \beta\; A \subseteq B.
+  \]
+  在课堂上我们已经证明, ($Pt(X)$, $\le$) 是偏序集。
+
+  \fig{width = 0.50\textwidth}{figs/set-partition-refinement}
+
+  \begin{enumerate}[(1)]
+    \item 请证明, 任意 $S \subseteq Pt(X)$ 都有上确界, 并给出上确界的表达式。
+    \item 请给出任意 $S \subseteq Pt(X)$ 的下确界的表达式。
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}

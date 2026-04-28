@@ -1,0 +1,806 @@
+% math4cs-hw1-prop-logic-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\PassOptionsToPackage{shortlabels}{enumitem}
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+\newenvironment{intention}
+  {\par\smallskip\noindent\textbf{命题意图. }\ignorespaces}
+  {\par\smallskip}
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (1-prop-logic: 命题逻辑)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年3月12日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[命题逻辑公式上的数学归纳法]
+  假设公式 $\alpha$ 中不含 ``$\lnot$'' 符号。
+  请证明, $\alpha$ 中超过四分之一的符号是命题符号。
+
+  ({\it 提示: 公式的长度定义见课件。})
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    直接证明更强的结论
+    $\ell(\alpha) = 4 s(\alpha) - 3$;
+    其中 $\ell(\alpha)$ 是公式长度, $s(\alpha)$ 是命题符号出现次数。
+  \end{intention}
+
+  设 $\ell(\alpha)$ 表示公式 $\alpha$ 的长度,
+  $s(\alpha)$ 表示其中命题符号出现的次数。
+  证明如下更强命题:
+  \[
+    P(\alpha): \ell(\alpha) = 4 s(\alpha) - 3.
+  \]
+
+  对公式 $\alpha$ 作结构归纳。
+
+  \textbf{基例.}
+  若 $\alpha = p$ 为命题符号, 则
+  \[
+    \ell(\alpha) = 1, \qquad s(\alpha) = 1,
+  \]
+  从而
+  \[
+    \ell(\alpha) = 1 = 4 \cdot 1 - 3 = 4 s(\alpha) - 3.
+  \]
+
+  \textbf{归纳步骤.}
+  由于 $\alpha$ 中不含 $\lnot$, 所以非原子公式只能形如
+  \[
+    \alpha = (\beta \circ \gamma),
+    \qquad
+    \circ \in \{\land, \lor, \to, \leftrightarrow\}.
+  \]
+  设 $P(\beta)$ 与 $P(\gamma)$ 成立, 即
+  \[
+    \ell(\beta) = 4 s(\beta) - 3,
+    \qquad
+    \ell(\gamma) = 4 s(\gamma) - 3.
+  \]
+  由长度定义,
+  \[
+    \ell(\alpha) = \ell(\beta) + \ell(\gamma) + 3,
+  \]
+  其中额外的 $3$ 来自左括号、联词和右括号。
+  又
+  \[
+    s(\alpha) = s(\beta) + s(\gamma).
+  \]
+  因而
+  \begin{align*}
+    \ell(\alpha)
+      &= \ell(\beta) + \ell(\gamma) + 3 \\
+      &= (4 s(\beta) - 3) + (4 s(\gamma) - 3) + 3 \\
+      &= 4 (s(\beta) + s(\gamma)) - 3 \\
+      &= 4 s(\alpha) - 3.
+  \end{align*}
+
+  由结构归纳法, 对任意不含 $\lnot$ 的公式 $\alpha$,
+  都有
+  \[
+    \ell(\alpha) = 4 s(\alpha) - 3.
+  \]
+  因而
+  \[
+    4 s(\alpha) = \ell(\alpha) + 3 > \ell(\alpha),
+  \]
+  即
+  \[
+    s(\alpha) > \frac{\ell(\alpha)}{4}.
+  \]
+  所以 $\alpha$ 中超过四分之一的符号是命题符号。
+
+  \begin{remark}
+    \textbf{重点.} 证明更强的不变量 $\ell(\alpha) = 4 s(\alpha) - 3$ 最直接。
+    \textbf{难点.} 归纳步骤里长度要把两侧括号和中间联词一并计入, 因而是“$+3$”。
+    \textbf{易错点.} 若忽略括号, 就会把长度关系写错。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确设定归纳命题 $P(\alpha)$: \score{2}
+    \item 原子公式基例正确: \score{2}
+    \item 正确写出二元联词情形的长度递推式: \score{2}
+    \item 完成归纳步骤并得到 $\ell(\alpha) = 4 s(\alpha) - 3$: \score{3}
+    \item 推出 $s(\alpha) > \ell(\alpha)/4$: \score{1}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[命题逻辑公式的语义]
+  请找出所有满足以下公式的真值指派:
+  \begin{enumerate}[(1)]
+    \item $\alpha: (A_{1} \to A_{2}) \land (A_{2} \to A_{3})
+      \land \cdots \land (A_{n-1} \to A_{n})$
+    \item $\beta: \alpha \land (A_{n} \to A_{1})$
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(1)]
+    \item
+      \begin{intention}
+        把真值记成全序 $\mathrm{F} < \mathrm{T}$; 每个蕴含 $A_i \to A_{i+1}$
+        等价于约束 $v(A_i) \le v(A_{i+1})$。
+      \end{intention}
+
+      记
+      \[
+        \alpha = (A_1 \to A_2) \land (A_2 \to A_3) \land \cdots \land (A_{n-1} \to A_n).
+      \]
+      对任意真值指派 $v$,
+      \[
+        v(\alpha) = \mathrm{T}
+        \iff
+        v(A_1) \le v(A_2) \le \cdots \le v(A_n),
+      \]
+      其中把 $\mathrm{F} < \mathrm{T}$ 看作二元全序。
+
+      因而满足 $\alpha$ 的真值序列恰好是
+      \[
+        \underbrace{\mathrm{F}, \dots, \mathrm{F}}_{k\text{ 个}},
+        \underbrace{\mathrm{T}, \dots, \mathrm{T}}_{n-k\text{ 个}}
+        \qquad (0 \le k \le n).
+      \]
+
+      等价地, 所有满足 $\alpha$ 的真值指派恰为
+      \[
+        v_k(A_i) =
+        \begin{cases}
+          \mathrm{F}, & 1 \le i \le k, \\
+          \mathrm{T}, & k < i \le n,
+        \end{cases}
+        \qquad 0 \le k \le n.
+      \]
+
+      \begin{remark}
+        \textbf{重点.} $\alpha$ 的本质约束是
+        $A_1, \dots, A_n$ 的真值必须单调不降。
+        \textbf{易错点.} 形如
+        $(\mathrm{F}, \mathrm{F}, \mathrm{T}, \mathrm{T}, \dots, \mathrm{T})$
+        也满足 $\alpha$; 并非只有“全真”或“全假”。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 将每个蕴含读成单调约束 $v(A_i) \le v(A_{i+1})$: \score{3}
+        \item 给出满足 $\alpha$ 的一般形状 $\mathrm{F}^k\mathrm{T}^{n-k}$: \score{5}
+        \item 写出完整结论 $0 \le k \le n$: \score{2}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        在上题的链式约束基础上再加入 $A_n \to A_1$, 得到闭环:
+        $A_1 \le \cdots \le A_n \le A_1$。
+      \end{intention}
+
+      记
+      \[
+        \beta = \alpha \land (A_n \to A_1).
+      \]
+      则对任意真值指派 $v$,
+      \[
+        v(\beta) = \mathrm{T}
+        \iff
+        v(A_1) \le v(A_2) \le \cdots \le v(A_n) \le v(A_1).
+      \]
+      由于 $\le$ 是全序, 上式成立当且仅当
+      \[
+        v(A_1) = v(A_2) = \cdots = v(A_n).
+      \]
+      因而满足 $\beta$ 的真值指派只有两种:
+      \[
+        (\mathrm{T}, \mathrm{T}, \dots, \mathrm{T}),
+        \qquad
+        (\mathrm{F}, \mathrm{F}, \dots, \mathrm{F}).
+      \]
+
+      \begin{remark}
+        \textbf{重点.} 加入最后一个蕴含后, 线性链变成闭环, 于是所有命题符号必须同值。
+        \textbf{易错点.} 不要漏掉“全假”这组赋值; 它同样满足所有蕴含式。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 正确写出闭环约束 $A_1 \le \cdots \le A_n \le A_1$: \score{4}
+        \item 推出所有 $A_i$ 同值: \score{4}
+        \item 给出两组满足赋值: \score{2}
+      \end{enumerate}
+  \end{enumerate}
+
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[重言蕴含]
+  请利用重言式证明:
+  \[
+    \set{\alpha \to \beta} \models
+      (\gamma \to \alpha) \to (\gamma \to \beta).
+  \]
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先把目标改写成一个单独的重言式, 再用等值演算把它化到 $\top$。
+  \end{intention}
+
+  设
+  \[
+    \varphi \triangleq
+      (\alpha \to \beta) \to ((\gamma \to \alpha) \to (\gamma \to \beta)).
+  \]
+  则
+  \begin{align*}
+    \varphi
+      &\equiv \lnot(\alpha \to \beta) \lor \lnot(\gamma \to \alpha) \lor (\gamma \to \beta) \\
+      &\equiv \lnot(\lnot\alpha \lor \beta) \lor \lnot(\lnot\gamma \lor \alpha) \lor (\lnot\gamma \lor \beta) \\
+      &\equiv (\alpha \land \lnot\beta) \lor (\gamma \land \lnot\alpha) \lor \lnot\gamma \lor \beta \\
+      &\equiv \bigl((\alpha \land \lnot\beta) \lor \beta\bigr)
+        \lor \bigl((\gamma \land \lnot\alpha) \lor \lnot\gamma\bigr) \\
+      &\equiv (\alpha \lor \beta) \lor (\lnot\alpha \lor \lnot\gamma) \\
+      &\equiv (\alpha \lor \lnot\alpha) \lor \beta \lor \lnot\gamma \\
+      &\equiv \top.
+  \end{align*}
+
+  故
+  \[
+    \models (\alpha \to \beta) \to ((\gamma \to \alpha) \to (\gamma \to \beta)).
+  \]
+  因而
+  \[
+    \set{\alpha \to \beta} \models
+      (\gamma \to \alpha) \to (\gamma \to \beta).
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 要证明的是一个“由前提推出结论”的重言式,
+    即 $(\alpha \to \beta) \to ((\gamma \to \alpha) \to (\gamma \to \beta))$。
+    \textbf{难点.} 中间关键化简是
+    $\beta \lor (\alpha \land \lnot\beta) \equiv \alpha \lor \beta$。
+    \textbf{易错点.} 不要把“语义蕴含”直接当作“蕴含符号”来化简;
+    要先写出对应重言式。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确写出对应重言式 $\varphi$: \score{2}
+    \item 去掉蕴含号并化为只含 $\lnot, \land, \lor$ 的公式: \score{3}
+    \item 通过等值变形化到 $\top$: \score{4}
+    \item 由重言式推出原语义蕴含: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[合取范式与析取范式]
+  我们先引入一个定义。
+
+  \begin{definition}[合取范式 (Conjunctive Normal Form; CNF)]
+    \label{def:cnf}
+    我们称公式 $\alpha$ 是\red{\bf 合取范式}, 如果它形如
+    \[
+      \alpha = \beta_{1} \land \beta_{2} \land \dots \land \beta_{k},
+    \]
+    其中, 每个 $\beta_{i}$ 都形如
+    \[
+      \beta_{i} = \beta_{i1} \lor \beta_{i2} \lor \dots \lor \beta_{in},
+    \]
+    并且 $\beta_{ij}$ 或是一个命题符号, 或是命题符号的否定。
+  \end{definition}
+
+  例如, 下面的公式就是一个合取范式。
+  \[
+    (P \lor \lnot Q \lor R) \;\red{\land}\; (\lnot P \lor Q) \;\red{\land}\; \lnot Q
+  \]
+
+  将定义~\ref{def:cnf} 中的所有$\land$换成$\lor$, 所有$\lor$换成$\land$, 其余不变,
+  就变成了析取范式 (Disjunctive Normal Form; DNF)的定义。本题以CNF为例。
+
+  将任意公式转化成CNF或DNF的方法如下:
+  \begin{enumerate}[(1)]
+    \item 先将公式中的联词化归成 $\lnot$, $\land$ 与 $\lor$;
+    \item 再使用 De Morgan 律将 $\lnot$ 移到各个命题变元之前 (\blue{``否定深入''});
+    \item 最后使用结合律、分配律将公式化归成合取范式或析取范式。
+  \end{enumerate}
+
+  请将
+  \[
+    (P \land (Q \to R)) \to S
+  \]
+  化为合取范式。
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    按标准三步走: 去掉 $\to$, 再否定深入, 最后用分配律整理成 CNF。
+  \end{intention}
+
+  \begin{align*}
+    (P \land (Q \to R)) \to S
+      &\equiv \lnot (P \land (Q \to R)) \lor S \\
+      &\equiv \lnot (P \land (\lnot Q \lor R)) \lor S \\
+      &\equiv \lnot P \lor \lnot (\lnot Q \lor R) \lor S \\
+      &\equiv \lnot P \lor (Q \land \lnot R) \lor S \\
+      &\equiv ((\lnot P \lor S) \lor Q) \land ((\lnot P \lor S) \lor \lnot R) \\
+      &\equiv (\lnot P \lor Q \lor S) \land (\lnot P \lor \lnot R \lor S).
+  \end{align*}
+
+  因而所求合取范式为
+  \[
+    (\lnot P \lor Q \lor S) \land (\lnot P \lor \lnot R \lor S).
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 先把 $Q \to R$ 化为 $\lnot Q \lor R$, 再整体处理最外层蕴含。
+    \textbf{难点.} 公式
+    $\lnot P \lor (Q \land \lnot R) \lor S$
+    不是 CNF, 还必须分配一次。
+    \textbf{易错点.} $\lnot(\lnot Q \lor R)$ 要化为 $Q \land \lnot R$, 不是 $\lnot Q \land R$。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 去掉两处蕴含号: \score{3}
+    \item 正确完成“否定深入”: \score{3}
+    \item 正确应用分配律得到 CNF: \score{3}
+    \item 写出最终 CNF: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[命题逻辑的自然推理系统]
+  请使用自然推理规则证明以下结论:
+
+  {提示: 你可以使用 \LaTeX{} package `logicproof' 书写漂亮的证明。}
+  \begin{enumerate}[(1)]
+    \item
+      \[
+        p  \to (q \to r) \vdash (p \land q) \to r
+      \]
+    \item
+      \[
+        (p \land q) \lor r \vdash (p \lor r) \land (q \lor r)
+      \]
+    \item
+      \[
+        (p \lor r) \land (q \lor r) \vdash (p \land q) \lor r
+      \]
+    \item
+      \[
+        \vdash \alpha \to (\beta \to \alpha)
+      \]
+    \item
+      \[
+        \vdash (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
+      \]
+    \item
+      \[
+        \vdash (\lnot \beta \to \lnot \alpha) \to ((\lnot \beta \to \alpha) \to \beta)
+      \]
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(1)]
+    \item
+      \begin{intention}
+        目标是一个蕴含式, 先用 $\to\intro$; 在子证明中把 $p \land q$ 拆开后连续两次用 $\to\elim$。
+      \end{intention}
+
+      \begin{proof}
+        \begin{logicproof}{3}
+          p \to (q \to r) & premise \\
+          \begin{subproof}
+            p \land q & assumption \\
+            p & $\land\elimleft$ 2 \\
+            q & $\land\elimright$ 2 \\
+            q \to r & $\to\elim$ 1, 3 \\
+            r & $\to\elim$ 5, 4
+          \end{subproof}
+          (p \land q) \to r & $\to\intro$ 2--6
+        \end{logicproof}
+      \end{proof}
+
+      \begin{remark}
+        \textbf{重点.} 先拆 $p \land q$, 再用前提 $p \to (q \to r)$。
+        \textbf{易错点.} 由第 1 行和第 3 行推出的是 $q \to r$, 不是直接推出 $r$。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 用 $\to\intro$ 启动子证明: \score{2}
+        \item 用两次 $\land$-elim 拆出 $p, q$: \score{3}
+        \item 用两次 $\to\elim$ 推出 $r$: \score{4}
+        \item 正确收束 $(p \land q) \to r$: \score{1}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        主前提是析取式, 直接对 $(p \land q) \lor r$ 作分情况讨论。
+      \end{intention}
+
+      \begin{proof}
+        \begin{logicproof}{4}
+          (p \land q) \lor r & premise \\
+          \begin{subproof}
+            p \land q & assumption \\
+            p & $\land\elimleft$ 2 \\
+            q & $\land\elimright$ 2 \\
+            p \lor r & $\lor\introleft$ 3 \\
+            q \lor r & $\lor\introleft$ 4 \\
+            (p \lor r) \land (q \lor r) & $\land\intro$ 5, 6
+          \end{subproof}
+          \begin{subproof}
+            r & assumption \\
+            p \lor r & $\lor\introright$ 8 \\
+            q \lor r & $\lor\introright$ 8 \\
+            (p \lor r) \land (q \lor r) & $\land\intro$ 9, 10
+          \end{subproof}
+          (p \lor r) \land (q \lor r) & $\lor\elim$ 1, 2--7, 8--11
+        \end{logicproof}
+      \end{proof}
+
+      \begin{remark}
+        \textbf{重点.} 两个分支都必须导出同一个目标式, 才能使用 $\lor\elim$。
+        \textbf{易错点.} 在 $r$ 分支里, $p \lor r$ 与 $q \lor r$ 都应由 $\lor\introright$ 得到。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 正确按主析取式分两种情形: \score{2}
+        \item 在 $p \land q$ 情形下得到目标式: \score{4}
+        \item 在 $r$ 情形下得到目标式: \score{3}
+        \item 用 $\lor\elim$ 收束: \score{1}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        先从前提拆出两个析取式, 再嵌套使用两次 $\lor\elim$。
+      \end{intention}
+
+      \begin{proof}
+        {\small
+        \begin{logicproof}{5}
+          (p \lor r) \land (q \lor r) & premise \\
+          p \lor r & $\land\elimleft$ 1 \\
+          q \lor r & $\land\elimright$ 1 \\
+          \begin{subproof}
+            p & assumption \\
+            \begin{subproof}
+              q & assumption \\
+              p \land q & $\land\intro$ 4, 5 \\
+              (p \land q) \lor r & $\lor\introleft$ 6
+            \end{subproof}
+            \begin{subproof}
+              r & assumption \\
+              (p \land q) \lor r & $\lor\introright$ 8
+            \end{subproof}
+            (p \land q) \lor r & $\lor\elim$ 3, 5--7, 8--9
+          \end{subproof}
+          \begin{subproof}
+            r & assumption \\
+            (p \land q) \lor r & $\lor\introright$ 11
+          \end{subproof}
+          (p \land q) \lor r & $\lor\elim$ 2, 4--10, 11--12
+        \end{logicproof}}
+      \end{proof}
+
+      \begin{remark}
+        \textbf{难点.} 该题需要嵌套两次分情况讨论。
+        \textbf{重点.} 先由前提拆出 $p \lor r$ 与 $q \lor r$。
+        \textbf{易错点.} 在 $p$ 分支内部, 仍需继续对 $q \lor r$ 作分情况讨论, 不能直接得到 $p \land q$。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 从前提拆出 $p \lor r$ 与 $q \lor r$: \score{2}
+        \item 外层按 $p \lor r$ 分情形: \score{2}
+        \item 内层按 $q \lor r$ 分情形并在 $p,q$ 情形下构造 $p \land q$: \score{4}
+        \item 正确完成两次 $\lor\elim$: \score{2}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        这是 A1 公理式; 连做两次 $\to\intro$ 即可。
+      \end{intention}
+
+      \begin{proof}
+        \begin{logicproof}{3}
+          \begin{subproof}
+            \alpha & assumption \\
+            \begin{subproof}
+              \beta & assumption \\
+              \alpha & copy 1
+            \end{subproof}
+            \beta \to \alpha & $\to\intro$ 2--3
+          \end{subproof}
+          \alpha \to (\beta \to \alpha) & $\to\intro$ 1--4
+        \end{logicproof}
+      \end{proof}
+
+      \begin{remark}
+        \textbf{重点.} 目标最外层是两个连续的蕴含, 所以证明结构自然是两层子证明。
+        \textbf{易错点.} 第 3 行应当复制外层假设 $\alpha$, 而不是复制 $\beta$。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 正确建立两层假设: \score{3}
+        \item 在内层子证明中得到 $\alpha$: \score{3}
+        \item 正确完成第一次 $\to\intro$: \score{2}
+        \item 正确完成第二次 $\to\intro$: \score{2}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        这是 A2 公理式; 依次假设
+        $\alpha \to (\beta \to \gamma)$,
+        $\alpha \to \beta$ 与 $\alpha$, 然后连做三次 MP 型推理。
+      \end{intention}
+
+      \begin{proof}
+        \begin{logicproof}{3}
+          \begin{subproof}
+            \alpha \to (\beta \to \gamma) & assumption \\
+            \begin{subproof}
+              \alpha \to \beta & assumption \\
+              \begin{subproof}
+                \alpha & assumption \\
+                \beta \to \gamma & $\to\elim$ 1, 3 \\
+                \beta & $\to\elim$ 2, 3 \\
+                \gamma & $\to\elim$ 4, 5
+              \end{subproof}
+              \alpha \to \gamma & $\to\intro$ 3--6
+            \end{subproof}
+            (\alpha \to \beta) \to (\alpha \to \gamma) & $\to\intro$ 2--7
+          \end{subproof}
+          (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma)) & $\to\intro$ 1--8
+        \end{logicproof}
+      \end{proof}
+
+      \begin{remark}
+        \textbf{重点.} 在最内层假设 $\alpha$ 后, 先推出 $\beta \to \gamma$, 再推出 $\beta$, 最后得到 $\gamma$。
+        \textbf{易错点.} 不要把第 4 行和第 5 行的先后关系写反: 必须先得到 $\beta \to \gamma$, 才能与 $\beta$ 合用。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 正确建立三层假设: \score{3}
+        \item 由第 1 行与第 3 行推出 $\beta \to \gamma$: \score{2}
+        \item 由第 2 行与第 3 行推出 $\beta$: \score{2}
+        \item 推出 $\gamma$ 并完成三次 $\to\intro$: \score{3}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        先假设两条前提蕴含, 再以 $\lnot\beta$ 为临时假设导出矛盾, 从而得到 $\beta$。
+      \end{intention}
+
+      \begin{proof}
+        \begin{logicproof}{4}
+          \begin{subproof}
+            \lnot\beta \to \lnot\alpha & assumption \\
+            \begin{subproof}
+              \lnot\beta \to \alpha & assumption \\
+              \begin{subproof}
+                \lnot\beta & assumption \\
+                \lnot\alpha & $\to\elim$ 1, 3 \\
+                \alpha & $\to\elim$ 2, 3 \\
+                \bot & $\lnot\elim$ 4, 5
+              \end{subproof}
+              \lnot\lnot\beta & $\lnot\intro$ 3--6 \\
+              \beta & $\lnot\lnot\elim$ 7
+            \end{subproof}
+            (\lnot\beta \to \alpha) \to \beta & $\to\intro$ 2--8
+          \end{subproof}
+          (\lnot\beta \to \lnot\alpha) \to ((\lnot\beta \to \alpha) \to \beta) & $\to\intro$ 1--9
+        \end{logicproof}
+      \end{proof}
+
+      \begin{remark}
+        \textbf{重点.} 在假设 $\lnot\beta$ 下, 两个前提分别给出 $\lnot\alpha$ 与 $\alpha$, 从而得到矛盾。
+        \textbf{难点.} 由矛盾推出的不是直接的 $\beta$, 而是先得到 $\lnot\lnot\beta$, 再消去双重否定。
+        \textbf{易错点.} 第 6 行应由 $\alpha$ 与 $\lnot\alpha$ 得到 $\bot$, 不能直接写成“故 $\beta$”。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(1)]
+        \item 正确建立三层假设: \score{3}
+        \item 在 $\lnot\beta$ 下推出 $\lnot\alpha$ 与 $\alpha$: \score{3}
+        \item 由矛盾得到 $\lnot\lnot\beta$ 并消去: \score{3}
+        \item 正确完成两次 $\to\intro$: \score{1}
+      \end{enumerate}
+  \end{enumerate}
+
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\beginoptional
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[命题逻辑的自然推理系统]
+  请使用自然推理规则 (非 derived rules) 证明排中律:
+  \[
+    \vdash \alpha \lor \lnot\alpha
+  \]
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先假设 $\lnot(\alpha \lor \lnot\alpha)$, 在该假设下分别由 $\alpha$ 和由 $\lnot\alpha$ 都推出矛盾, 最后用双重否定消去得到排中律。
+  \end{intention}
+
+  \begin{proof}
+    \begin{logicproof}{4}
+      \begin{subproof}
+        \lnot(\alpha \lor \lnot\alpha) & assumption \\
+        \begin{subproof}
+          \alpha & assumption \\
+          \alpha \lor \lnot\alpha & $\lor\introleft$ 2 \\
+          \bot & $\lnot\elim$ 1, 3
+        \end{subproof}
+        \lnot\alpha & $\lnot\intro$ 2--4 \\
+        \alpha \lor \lnot\alpha & $\lor\introright$ 5 \\
+        \bot & $\lnot\elim$ 1, 6
+      \end{subproof}
+      \lnot\lnot(\alpha \lor \lnot\alpha) & $\lnot\intro$ 1--7 \\
+      \alpha \lor \lnot\alpha & $\lnot\lnot\elim$ 8
+    \end{logicproof}
+  \end{proof}
+
+  \begin{remark}
+    \textbf{重点.} 全程只用基础规则: $\lor$-intro, $\lnot$-intro, $\lnot$-elim 与 $\lnot\lnot$-elim。
+    \textbf{易错点.} 第 5 行得到的是 $\lnot\alpha$, 之后还要再用一次 $\lor\introright$ 构造 $\alpha \lor \lnot\alpha$。
+  \end{remark}
+
+  \textbf{分值分配（参考 10 分；选做题可不计入总分）.}
+  \begin{enumerate}[(1)]
+    \item 正确以 $\lnot(\alpha \lor \lnot\alpha)$ 为假设启动反证: \score{2}
+    \item 在假设 $\alpha$ 下推出矛盾并得到 $\lnot\alpha$: \score{4}
+    \item 由 $\lnot\alpha$ 再推出矛盾: \score{2}
+    \item 用双重否定消去得到排中律: \score{2}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[Build with AI]
+  利用 AI 工具（如 Google AI Studio, Google Gemini,
+  ChatGPT, Codex, Claude Code, Kimi 等）
+  实现一个以``命题逻辑的自然推理系统''为主题的网页或应用程序。
+
+  具体形式不限，可以是一个交互式的证明助手，
+  也可以是证明通关游戏，等等。
+
+  可以多人合作完成，提交时请注明参与者姓名。
+
+  提交内容包括：
+  \begin{itemize}
+    \item 项目名称
+    \item 项目作者
+    \item 项目链接（如 GitHub 仓库链接，或在线应用链接）
+    \item 项目截图（至少一张展示核心功能的截图）
+    \item 项目简介（功能介绍，使用说明等）
+    \item 与 AI 工具的核心对话记录
+    \item 可选: 开发心得（开发过程中遇到的挑战、解决方案、感悟、AI 工具的表现等）
+    \item 可选：项目演示视频链接（如 Bilibili 视频链接）
+    \item 其它, 由你决定
+  \end{itemize}
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    不写实现方案, 只给出几个可直接立项的创意方向; 重点放在“自然推理系统”的交互表达上。
+  \end{intention}
+
+  可以考虑如下几个项目想法:
+
+  \begin{enumerate}[(1)]
+    \item \textbf{Proof Escape Room}
+      把每一道自然推理题设计成“密室关卡”。
+      玩家只有在正确使用 $\land$-elim、$\lor$-elim、$\to$-intro 等规则后,
+      才能解锁下一扇门或下一段剧情。
+
+    \item \textbf{Natural Deduction Roguelike}
+      把证明过程做成 roguelike 冒险。
+      每张卡牌对应一个推理规则, 每一层地下城对应一个待证序贯,
+      玩家要在有限步数内拼出完整证明。
+
+    \item \textbf{Proof DJ / Proof Composer}
+      把推理规则做成可拖拽的“音乐片段”。
+      正确的证明会生成和谐旋律, 错误的证明会出现不协和音,
+      让“证明正确性”变成可视化、可听化体验。
+
+    \item \textbf{Counterexample Detective}
+      用户输入一个猜想后, 系统自动判断是可证、不可证、还是可由反例击破。
+      若不可证, 就生成最小反例赋值并把失败步骤高亮出来,
+      适合训练“证明失败诊断”能力。
+
+    \item \textbf{Proof Arena}
+      多人在线对战模式。
+      一人负责给出目标公式, 一人负责构造证明, 另一人负责寻找反例或指出非法规则使用,
+      把证明训练变成互动式竞赛。
+
+    \item \textbf{Storybook of Logic}
+      把命题逻辑证明做成漫画式或视觉小说式叙事。
+      每一步推理都会对应角色行动、剧情推进或世界状态变化,
+      适合面向初学者做概念启蒙。
+  \end{enumerate}
+
+  若要提交作业, 可以从上面任选一个, 再补上:
+  \begin{itemize}
+    \item 项目名称与作者
+    \item GitHub 或在线链接
+    \item 核心功能截图
+    \item 功能简介与使用方式
+    \item 与 AI 工具的核心对话记录
+  \end{itemize}
+
+  \begin{remark}
+    \textbf{重点.} 最有表现力的方向通常不是“把证明过程做成纯文本输入框”,
+    而是把规则使用过程变成\blue{可视化、游戏化、反馈即时}的交互体验。
+    \textbf{易错点.} 不要把项目做成一般的聊天机器人演示;
+    主题必须落在“命题逻辑的自然推理系统”本身。
+  \end{remark}
+
+  \textbf{评分参考（10分；选做题可不计入总分）.}
+  \begin{enumerate}[(1)]
+    \item 创意与主题贴合度: \score{3}
+    \item 交互设计或呈现方式的新颖性: \score{3}
+    \item 与自然推理规则的结合程度: \score{2}
+    \item 提交材料完整度: \score{2}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
