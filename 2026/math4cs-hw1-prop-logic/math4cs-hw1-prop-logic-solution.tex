@@ -112,8 +112,87 @@
   \]
   所以 $\alpha$ 中超过四分之一的符号是命题符号。
 
+  \medskip
+  \textbf{补充证明（直接证明原结论）.}
+
+  \begin{intention}
+    不再证明精确公式 $\ell(\alpha) = 4 s(\alpha) - 3$,
+    而是只证明推出结论所需的不等式
+    $s(\alpha) > \ell(\alpha)/4$。
+  \end{intention}
+
+  令 $c(\alpha)$ 表示公式 $\alpha$ 中二元联词的出现次数。
+  由于 $\alpha$ 中不含 $\lnot$,
+  故 $\alpha$ 的非命题符号恰好由二元联词与配对括号组成。
+  因而
+  \[
+    \ell(\alpha) = s(\alpha) + c(\alpha) + 2 c(\alpha)
+    = s(\alpha) + 3 c(\alpha).
+  \]
+  所以只需证明
+  \[
+    c(\alpha) < s(\alpha).
+  \]
+
+  对 $\alpha$ 作结构归纳。
+
+  \textbf{基例.}
+  若 $\alpha = p$ 为命题符号, 则
+  \[
+    c(\alpha) = 0 < 1 = s(\alpha).
+  \]
+
+  \textbf{归纳步骤.}
+  若
+  \[
+    \alpha = (\beta \circ \gamma),
+    \qquad
+    \circ \in \{\land, \lor, \to, \leftrightarrow\},
+  \]
+  且归纳假设
+  \[
+    c(\beta) < s(\beta),
+    \qquad
+    c(\gamma) < s(\gamma),
+  \]
+  则由于计数取整数值,
+  \[
+    c(\beta) \le s(\beta) - 1,
+    \qquad
+    c(\gamma) \le s(\gamma) - 1.
+  \]
+  又
+  \[
+    c(\alpha) = c(\beta) + c(\gamma) + 1,
+    \qquad
+    s(\alpha) = s(\beta) + s(\gamma).
+  \]
+  因而
+  \begin{align*}
+    c(\alpha)
+      &= c(\beta) + c(\gamma) + 1 \\
+      &\le (s(\beta) - 1) + (s(\gamma) - 1) + 1 \\
+      &= s(\alpha) - 1 \\
+      &< s(\alpha).
+  \end{align*}
+
+  由结构归纳法, 对任意不含 $\lnot$ 的公式 $\alpha$,
+  都有 $c(\alpha) < s(\alpha)$。
+  于是
+  \[
+    \ell(\alpha) = s(\alpha) + 3 c(\alpha)
+    < s(\alpha) + 3 s(\alpha)
+    = 4 s(\alpha).
+  \]
+  故
+  \[
+    s(\alpha) > \frac{\ell(\alpha)}{4}.
+  \]
+  原结论得证。
+
   \begin{remark}
     \textbf{重点.} 证明更强的不变量 $\ell(\alpha) = 4 s(\alpha) - 3$ 最直接。
+    \textbf{补充视角.} 若只想得到题目结论, 证明 $c(\alpha) < s(\alpha)$ 也足够。
     \textbf{难点.} 归纳步骤里长度要把两侧括号和中间联词一并计入, 因而是“$+3$”。
     \textbf{易错点.} 若忽略括号, 就会把长度关系写错。
   \end{remark}
