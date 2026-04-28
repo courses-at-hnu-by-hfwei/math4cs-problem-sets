@@ -1,0 +1,498 @@
+% math4cs-hw2-predicate-logic-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+\newcommand{\green}[1]{\textcolor{green!50!black}{#1}}
+\newenvironment{intention}
+  {\par\smallskip\noindent\textbf{命题意图. }\ignorespaces}
+  {\par\smallskip}
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (2-predicate-logic: 一阶谓词逻辑)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年3月19日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  \fig{width = 0.50\textwidth}{figs/irreplaceable}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 自由出现、约束出现、替换、无冲突替换]
+  针对以下两个公式 $\alpha$ 和 $\beta$,
+  \begin{enumerate}[(1)]
+    \item $\alpha: \forall x\; (P(x) \to \exists y\; Q(x, y))
+      \to (\exists z\; R(x, y, z))$
+    \item $\beta: (x = y) \to \forall z\; (R(x, z) \land R(y, z))$
+  \end{enumerate}
+  分别回答以下问题:
+  \begin{enumerate}[(a)]
+    \item 请找出公式中变元 $x$ 的自由出现与约束出现。
+    \item 请给出 $\alpha[y/x]$、$\alpha[z/x]$、
+      $\beta[y/x]$、$\beta[z/x]$。
+    \item 请判断以上四个替换是否为无冲突替换, 并说明理由。
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先按课堂约定准确划分量词的管辖范围, 再只对 $x$ 的自由出现做替换, 最后逐层检查 ``会不会把代入项中的自由变元变成约束变元''。
+  \end{intention}
+
+  先将
+  \[
+    \alpha = \big(\forall x\; (P(x) \to \exists y\; Q(x, y))\big)
+      \to \big(\exists z\; R(x, y, z)\big)
+  \]
+  写成带括号的形式; 其中左侧的 $\forall x$ \emph{只管辖左侧圆括号中的公式}。
+
+  \begin{enumerate}[(a)]
+    \item \textbf{自由出现与约束出现.}
+
+      \begin{enumerate}[(1)]
+        \item 对于 $\alpha$:
+          \[
+            \forall x\; (P(x) \to \exists y\; Q(x, y))
+              \to (\exists z\; R(x, y, z))
+          \]
+          其中 $x$ 的出现分为:
+          \[
+            \red{\text{约束出现: }} P(\red{x}),\; Q(\red{x}, y);
+            \qquad
+            \green{\text{自由出现: }} R(\green{x}, y, z).
+          \]
+
+        \item 对于 $\beta$:
+          \[
+            (x = y) \to \forall z\; (R(x, z) \land R(y, z))
+          \]
+          其中 $x$ 的出现分为:
+          \[
+            \green{\text{自由出现: }} (\green{x} = y),\; R(\green{x}, z);
+            \qquad
+            \red{\text{约束出现: 无}}.
+          \]
+      \end{enumerate}
+
+    \item \textbf{四个替换式.}
+
+      由 ``只替换自由出现'' 的定义,
+      \begin{align*}
+        \alpha[y/x]
+          &= \big(\forall x\; (P(x) \to \exists y\; Q(x, y))\big)
+              \to \big(\exists z\; R(y, y, z)\big), \\
+        \alpha[z/x]
+          &= \big(\forall x\; (P(x) \to \exists y\; Q(x, y))\big)
+              \to \big(\exists z\; R(z, y, z)\big), \\
+        \beta[y/x]
+          &= (y = y) \to \forall z\; (R(y, z) \land R(y, z)), \\
+        \beta[z/x]
+          &= (z = y) \to \forall z\; (R(z, z) \land R(y, z)).
+      \end{align*}
+
+    \item \textbf{是否为无冲突替换.}
+
+      \begin{enumerate}[(1)]
+        \item $\alpha[y/x]$ 是无冲突替换。
+
+          因为 $x$ 在左侧 $\forall x\; (P(x) \to \exists y\; Q(x, y))$ 中不自由出现,
+          故该部分自动满足定义中的条件 (a);
+          而在右侧子公式 $\exists z\; R(x, y, z)$ 中,
+          代入项 $y$ 不含 $z$, 因而满足条件 (b)。
+
+        \item $\alpha[z/x]$ \textbf{不是}无冲突替换。
+
+          因为在子公式 $\exists z\; R(x, y, z)$ 中,
+          $x$ 是自由出现的, 但代入项 $z$ 含有变元 $z$;
+          替换后得到 $\exists z\; R(z, y, z)$,
+          其中新代入的 $z$ 被外层 $\exists z$ 约束, 发生变元捕获。
+
+        \item $\beta[y/x]$ 是无冲突替换。
+
+          唯一相关量词是 $\forall z$; 由于代入项 $y$ 中不含 $z$,
+          故不会发生捕获。
+
+        \item $\beta[z/x]$ \textbf{不是}无冲突替换。
+
+          因为在子公式 $\forall z\; (R(x, z) \land R(y, z))$ 中,
+          $x$ 自由出现, 而代入项 $z$ 含有 $z$;
+          替换后得到 $\forall z\; (R(z, z) \land R(y, z))$,
+          新代入的 $z$ 被 $\forall z$ 约束, 故有冲突。
+      \end{enumerate}
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} $\alpha$ 中左侧的 $\forall x$ 只约束左侧圆括号, 不约束整个蕴含式。\
+    \textbf{难点.} 判断无冲突替换时, 要检查的是 ``代入项中的变元是否会被途中遇到的量词捕获''。\
+    \textbf{易错点.} $\alpha[y/x]$ 中左侧的 $\exists y$ 与右侧自由出现的 $y$ 无关; 它不会跨过主联词去约束右侧的 $y$。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确划分 $\alpha$ 中 $x$ 的自由出现与约束出现: \score{2}
+    \item 正确划分 $\beta$ 中 $x$ 的自由出现与约束出现: \score{1}
+    \item 正确写出 $\alpha[y/x], \alpha[z/x]$: \score{3}
+    \item 正确写出 $\beta[y/x], \beta[z/x]$: \score{2}
+    \item 正确判断四个替换是否无冲突并说明原因: \score{2}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 替换]
+  请证明, 对于任意公式 $\alpha$ 与其中的任意变元 $x$,
+  $x$ 都可以在 $\alpha$ 中无冲突地替换自己。
+
+  \noindent (提示: 虽然该结论看上去很显然, 但请考虑如何以规范的方式证明它。
+  你不能说 ``显然成立'' 或 ``不难看出'' 等等。)
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    这是一个关于公式构造方式的元命题, 最自然的方法是对公式作结构归纳; 唯一真正需要分情况的是量词情形 $\forall/\exists y\; \psi$。
+  \end{intention}
+
+  证明更强命题:
+  \[
+    P(\alpha): \text{对任意变元 } x,\; x \text{ 都可以在 } \alpha \text{ 中无冲突地替换 } x.
+  \]
+
+  对公式 $\alpha$ 作结构归纳。
+
+  \textbf{基例.}
+  若 $\alpha$ 是原子公式, 则按 ``无冲突替换'' 的定义,
+  原子公式情形无附加条件, 故对任意变元 $x$,
+  $x$ 都可以在 $\alpha$ 中无冲突地替换 $x$。
+
+  \textbf{归纳步骤.}
+
+  \begin{enumerate}[(1)]
+    \item 若 $\alpha = \lnot \psi$,
+      且归纳假设表明 $P(\psi)$ 成立,
+      则对任意变元 $x$,
+      $x$ 可以在 $\psi$ 中无冲突地替换 $x$。
+      由定义,
+      $x$ 也可以在 $\lnot \psi$ 中无冲突地替换 $x$。
+
+    \item 若 $\alpha = \psi \ast \gamma$,
+      其中 $\ast \in \{\land, \lor, \to, \leftrightarrow\}$,
+      且归纳假设表明 $P(\psi)$ 与 $P(\gamma)$ 都成立,
+      则对任意变元 $x$,
+      $x$ 在 $\psi$ 与 $\gamma$ 中都可以无冲突地替换自己。
+      由定义,
+      $x$ 也可以在 $\psi \ast \gamma$ 中无冲突地替换 $x$。
+
+    \item 若 $\alpha = \forall y\; \psi$ 或 $\alpha = \exists y\; \psi$,
+      固定任意变元 $x$。
+
+      \begin{enumerate}[(a)]
+        \item 若 $x = y$, 则 $x$ 在 $\forall/\exists x\; \psi$ 中不自由出现,
+          故按定义中的条件 (a),
+          $x$ 可以在 $\forall/\exists x\; \psi$ 中无冲突地替换 $x$。
+
+        \item 若 $x \neq y$, 则变元 $y$ 不在代入项 $x$ 中出现,
+          且由归纳假设, $x$ 可以在 $\psi$ 中无冲突地替换 $x$。
+          因而按定义中的条件 (b),
+          $x$ 可以在 $\forall/\exists y\; \psi$ 中无冲突地替换 $x$。
+      \end{enumerate}
+  \end{enumerate}
+
+  综上, $P(\alpha)$ 对任意公式 $\alpha$ 都成立。故对于任意公式 $\alpha$ 与任意变元 $x$,
+  $x$ 都可以在 $\alpha$ 中无冲突地替换自己。
+
+  \begin{remark}
+    \textbf{重点.} 这是对公式构造规则的结构归纳, 不是对自由出现次数作归纳。\
+    \textbf{难点.} 量词情形必须区分 $x = y$ 与 $x \neq y$。\
+    \textbf{易错点.} 当 $x = y$ 时, 不能套用条件 (b); 此时应直接使用 ``$x$ 不自由出现'' 的条件 (a)。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 写出正确的归纳命题并说明使用结构归纳: \score{2}
+    \item 处理原子公式与否定情形: \score{2}
+    \item 处理二元联词情形: \score{2}
+    \item 正确处理量词情形中的 $x = y$ 子情形: \score{2}
+    \item 正确处理量词情形中的 $x \neq y$ 子情形并完成总结: \score{2}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 语义等价]
+  在数学分析中, 极限的定义如下:
+
+  $\lim\limits_{x \to a} f(x) = l$ 当且仅当
+  \[
+    \forall \epsilon \in \R^{+}\; \exists \delta \in \R^{+}\;
+      \forall x\; (0 < |x - a| < \delta \to |f(x) - l| < \epsilon).
+  \]
+  请写出 $\lim\limits_{x \to a} f(x) \neq l$ 的定义。
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    直接对 ``$\lim\limits_{x \to a} f(x) = l$'' 的定义逐步取否定: 依次翻转量词, 再把 $\lnot(A \to B)$ 化成 $A \land \lnot B$。
+  \end{intention}
+
+  由题设,
+  \[
+    \lim\limits_{x \to a} f(x) = l
+    \iff
+    \forall \epsilon \in \R^{+}\; \exists \delta \in \R^{+}\;
+      \forall x\; (0 < |x - a| < \delta \to |f(x) - l| < \epsilon).
+  \]
+  因而
+  \begin{align*}
+    \lim\limits_{x \to a} f(x) \neq l
+      &\iff \lnot \forall \epsilon \in \R^{+}\; \exists \delta \in \R^{+}\;
+        \forall x\; (0 < |x - a| < \delta \to |f(x) - l| < \epsilon) \\
+      &\iff \exists \epsilon \in \R^{+}\; \forall \delta \in \R^{+}\;
+        \exists x\; \lnot (0 < |x - a| < \delta \to |f(x) - l| < \epsilon) \\
+      &\iff \exists \epsilon \in \R^{+}\; \forall \delta \in \R^{+}\;
+        \exists x\; \big(0 < |x - a| < \delta \land |f(x) - l| \ge \epsilon\big).
+  \end{align*}
+
+  故
+  \[
+    \boxed{
+      \lim\limits_{x \to a} f(x) \neq l
+      \iff
+      \exists \epsilon \in \R^{+}\; \forall \delta \in \R^{+}\;
+        \exists x\; \big(0 < |x - a| < \delta \land |f(x) - l| \ge \epsilon\big)
+    }.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 否定极限定义时, 量词次序必须整体翻转为 $\exists \epsilon\; \forall \delta\; \exists x$。\
+    \textbf{难点.} 否定蕴含要写成 $A \land \lnot B$, 这里得到的是
+    $0 < |x-a| < \delta \land |f(x)-l| \ge \epsilon$。\
+    \textbf{易错点.} 不能把结论误写成 ``$\forall \epsilon\; \forall \delta\; \exists x$'' 或仍保留蕴含号。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确从题设写出原极限定义: \score{2}
+    \item 正确否定最外层量词并得到 $\exists \epsilon\; \forall \delta\; \exists x$: \score{4}
+    \item 正确将 $\lnot(A \to B)$ 化为 $A \land \lnot B$: \score{3}
+    \item 将 $\lnot(|f(x)-l| < \epsilon)$ 化为 $|f(x)-l| \ge \epsilon$: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 普遍有效的公式]
+  在课堂上, 我们指出公式
+  \[
+    \forall x\; (\alpha \land \beta)
+      \leftrightarrow (\forall x\; \alpha) \land \beta
+  \]
+  在 ``$x$ 在 $\beta$ 中不自由出现'' 的前提下是普遍有效的。
+
+  \noindent 请证明, 如果 ``$x$ 在 $\beta$ 中自由出现'',
+  则上述公式不再是普遍有效的。
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    要证明 ``不再普遍有效'', 只需构造一个反例结构与一个变元赋值, 使该双条件式取假即可。
+  \end{intention}
+
+  取
+  \[
+    \alpha := (x = x),
+    \qquad
+    \beta := P(x).
+  \]
+  显然 $x$ 在 $\beta$ 中自由出现。
+
+  此时题中公式化为
+  \[
+    \forall x\; \big((x = x) \land P(x)\big)
+      \leftrightarrow
+      \big(\forall x\; (x = x)\big) \land P(x).
+  \]
+
+  取结构 $\mathcal M$ 与赋值 $s$ 如下:
+  \[
+    M = \{a, b\},
+    \qquad
+    P^{\mathcal M} = \{a\},
+    \qquad
+    s(x) = a.
+  \]
+
+  于是
+  \begin{align*}
+    \mathcal M, s \models \forall x\; \big((x = x) \land P(x)\big)
+      &\iff \mathcal M, s \models \forall x\; P(x) \\
+      &\iff \text{假},
+  \end{align*}
+  因为 $P^{\mathcal M}(b)$ 不成立。
+
+  另一方面,
+  \begin{align*}
+    \mathcal M, s \models \big(\forall x\; (x = x)\big) \land P(x)
+      &\iff \big(\mathcal M, s \models \forall x\; (x = x)\big)
+          \land \big(\mathcal M, s \models P(x)\big) \\
+      &\iff \text{真} \land \text{真} \\
+      &\iff \text{真},
+  \end{align*}
+  因为等号按通常解释恒真, 且 $s(x) = a \in P^{\mathcal M}$。
+
+  故
+  \[
+    \mathcal M, s \not\models
+    \forall x\; \big((x = x) \land P(x)\big)
+      \leftrightarrow
+      \big(\forall x\; (x = x)\big) \land P(x).
+  \]
+
+  因而当 $x$ 在 $\beta$ 中自由出现时,
+  \[
+    \forall x\; (\alpha \land \beta)
+      \leftrightarrow (\forall x\; \alpha) \land \beta
+  \]
+  不再是普遍有效公式。
+
+  \begin{remark}
+    \textbf{重点.} 证明 ``不是普遍有效'' 只需给出一个反例结构和一个赋值。\
+    \textbf{难点.} 右侧的 $\beta$ 中仍有自由出现的 $x$, 因而整个公式的真假会依赖赋值 $s$。\
+    \textbf{易错点.} 这里只给结构还不够, 因为题中公式含有自由变元; 必须同时给出赋值。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确选取满足 ``$x$ 在 $\beta$ 中自由出现'' 的 $\alpha, \beta$: \score{2}
+    \item 正确构造反例结构 $\mathcal M$: \score{2}
+    \item 正确给出赋值 $s$: \score{1}
+    \item 计算左侧为假: \score{2}
+    \item 计算右侧为真: \score{2}
+    \item 得出整个双条件式为假, 从而否定普遍有效性: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 前束范式]
+  对于任意的命题逻辑公式,
+  我们在上次作业中介绍了如何将其化归成合取范式或析取范式。
+  类似地, 对于任意的一阶谓词逻辑公式,
+  我们也可以将其化归成前束范式 (prenex normal form),
+  即``所有量词都出现在公式最前面''的形式。
+
+  准确地说, 称具有以下形式的公式为前束范式:
+  \[
+    Q_1 x_1\; Q_2 x_2\; \cdots\; Q_n x_n\; \alpha
+  \]
+  其中, 每个 $Q_i$ 都是 $\forall$ 或 $\exists$,
+  并且 $\alpha$ 中无量词。
+
+  可以利用下列规则进行量词操作, 将任意的一阶谓词逻辑公式化归成前束范式:
+  \begin{enumerate}[label = \textbf{R\arabic*}]
+    \item $\lnot \forall x\; \alpha \equiv \exists x\; \lnot \alpha$;
+    \item $\lnot \exists x\; \alpha \equiv \forall x\; \lnot \alpha$;
+    \item $\alpha \to \forall x\; \beta \equiv \forall x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\alpha$ 中自由出现;
+    \item $\alpha \to \exists x\; \beta \equiv \exists x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\alpha$ 中自由出现;
+    \item $(\forall x\; \alpha) \to \beta \equiv \exists x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\beta$ 中自由出现;
+    \item $(\exists x\; \alpha) \to \beta \equiv \forall x\; (\alpha \to \beta)$,
+      其中 $x$ 不在 $\beta$ 中自由出现.
+  \end{enumerate}
+
+  请利用以上规则将以下公式化归成前束范式,
+  并给出每一步使用的规则:
+  \[
+    \forall x\; \exists y\; P(x, y) \to \exists x\; Q(x).
+  \]
+
+  (提示: 答案可能不唯一)
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先对右侧的束缚变元做一次换名, 避免与左侧的 $\forall x$ 冲突; 然后按规则 R5、R6、R4 逐步把量词前移。
+  \end{intention}
+
+  先对右侧量词中的束缚变元换名:
+  \[
+    \forall x\; \exists y\; P(x, y) \to \exists x\; Q(x)
+    \equiv
+    \forall x\; \exists y\; P(x, y) \to \exists z\; Q(z).
+  \]
+
+  下面开始化归:
+  \begin{align*}
+    \forall x\; \exists y\; P(x, y) \to \exists z\; Q(z)
+      &\equiv \exists x\; \big(\exists y\; P(x, y) \to \exists z\; Q(z)\big)
+        && \text{(R5; $x$ 不在 $\exists z\; Q(z)$ 中自由出现)} \\
+      &\equiv \exists x\; \forall y\; \big(P(x, y) \to \exists z\; Q(z)\big)
+        && \text{(R6; $y$ 不在 $\exists z\; Q(z)$ 中自由出现)} \\
+      &\equiv \exists x\; \forall y\; \exists z\; \big(P(x, y) \to Q(z)\big)
+        && \text{(R4; $z$ 不在 $P(x, y)$ 中自由出现)}.
+  \end{align*}
+
+  因而可取其前束范式为
+  \[
+    \boxed{\exists x\; \forall y\; \exists z\; \big(P(x, y) \to Q(z)\big)}.
+  \]
+
+  其中矩阵
+  \[
+    P(x, y) \to Q(z)
+  \]
+  中已无量词, 故上式确为前束范式。
+
+  \begin{remark}
+    \textbf{重点.} 第一行先做束缚变元换名是必要的标准化步骤。\
+    \textbf{难点.} 每一步都要核对规则附带的 ``不自由出现'' 条件。\
+    \textbf{易错点.} 若不先把右侧 $\exists x\; Q(x)$ 改写为 $\exists z\; Q(z)$, 后续就无法合法地继续把右侧存在量词前移。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 先做正确的束缚变元换名: \score{2}
+    \item 正确应用 R5 前移最外层 $\forall x$: \score{3}
+    \item 正确应用 R6 前移 $\exists y$: \score{2}
+    \item 正确应用 R4 前移右侧 $\exists z$: \score{2}
+    \item 写出最终前束范式并说明矩阵无量词: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
