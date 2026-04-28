@@ -1,0 +1,604 @@
+% math4cs-hw3-predicate-logic-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (2-predicate-logic: 一阶谓词逻辑 II)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年3月30日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 模型与语义]
+  考虑一阶谓词逻辑逻辑的闭公式 (也称为语句; sentence)：
+  \[
+    \phi \triangleq \forall x\; \exists y\; \exists z\;
+      (P(x, y) \land P(z, y) \land (P(x, z) \to P(z, x)))
+  \]
+  以下哪些模型 $\mathcal{M}$ 满足 $\phi$? 请给出理由。
+  \begin{enumerate}[(1)]
+    \item $\mathcal{M}_{1}$:
+      $|\mathcal{M}| \triangleq \mathbb{N}$,
+      $P^{\mathcal{M}} \triangleq \{(x, y) \mid x < y\}$.
+    \item $\mathcal{M}_{2}$:
+      $|\mathcal{M}| \triangleq \mathbb{N}$,
+      $P^{\mathcal{M}} \triangleq \{(x, y) \mid x < y + 1\}$.
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    逐个模型为任意的 $x$ 构造见证元 $y, z$; 关键是注意第三个合取项是蕴含式, 可以通过让前件为假来满足。
+  \end{intention}
+
+  由于 $\phi$ 是闭公式, 判定 $\mathcal{M} \models \phi$ 与变元赋值无关。
+
+  \begin{enumerate}[(1)]
+    \item 对 $\mathcal{M}_{1}$, 有
+      \[
+        P^{\mathcal{M}_{1}}(a, b) \iff a < b.
+      \]
+      任取 $x \in \mathbb{N}$, 取
+      \[
+        y \triangleq x + 1,
+        \qquad
+        z \triangleq x.
+      \]
+      则
+      \[
+        P(x, y) \iff x < x + 1,
+        \qquad
+        P(z, y) \iff x < x + 1,
+      \]
+      均成立; 且
+      \[
+        P(x, z) \to P(z, x)
+        \iff
+        (x < x) \to (x < x)
+      \]
+      也成立, 因为前件 $x < x$ 为假。
+      故对任意 $x$ 都存在这样的 $y, z$, 从而
+      \[
+        \mathcal{M}_{1} \models \phi.
+      \]
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 正确写出 $P(a, b) \iff a < b$: \score{2}
+        \item 为任意 $x$ 选出见证元 $y = x + 1$: \score{2}
+        \item 为任意 $x$ 选出见证元 $z = x$: \score{2}
+        \item 验证三个合取项都成立: \score{3}
+        \item 得出 $\mathcal{M}_{1} \models \phi$: \score{1}
+      \end{enumerate}
+
+    \item 对 $\mathcal{M}_{2}$, 有
+      \[
+        P^{\mathcal{M}_{2}}(a, b) \iff a < b + 1,
+      \]
+      亦即在 $\mathbb{N}$ 上等价于 $a \le b$。
+      任取 $x \in \mathbb{N}$, 取
+      \[
+        y \triangleq x,
+        \qquad
+        z \triangleq x.
+      \]
+      则
+      \[
+        P(x, y) \iff x \le x,
+        \qquad
+        P(z, y) \iff x \le x,
+      \]
+      均成立; 且
+      \[
+        P(x, z) \to P(z, x)
+        \iff
+        (x \le x) \to (x \le x)
+      \]
+      显然成立。
+      故对任意 $x$ 都存在这样的 $y, z$, 从而
+      \[
+        \mathcal{M}_{2} \models \phi.
+      \]
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 正确把 $a < b + 1$ 化为 $a \le b$: \score{2}
+        \item 为任意 $x$ 选出见证元 $y = x$: \score{2}
+        \item 为任意 $x$ 选出见证元 $z = x$: \score{2}
+        \item 验证三个合取项都成立: \score{3}
+        \item 得出 $\mathcal{M}_{2} \models \phi$: \score{1}
+      \end{enumerate}
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} 把“满足闭公式”转化为“对任意 $x$ 能构造见证元”。
+    \textbf{难点.} 第三个条件是蕴含式, 并不要求 $P(x, z)$ 真; 让前件为假常常更省事。
+    \textbf{易错点.} 在 $\mathcal{M}_{2}$ 中, $x < y + 1$ 在 $\mathbb{N}$ 上等价于 $x \le y$, 不是严格小于。
+  \end{remark}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 形式化描述与推理]
+  请使用一阶谓词逻辑公式描述以下两个定义,
+  并从逻辑推理的角度说明这两种定义之间是否有强弱之分
+  （可以使用``重言式''进行公式转换）。
+  \noindent {(要求: 需给出关键的推理步骤或理由)}
+
+  A function $f$ from $\mathbb{R}$ to $\mathbb{R}$ is called
+  \begin{enumerate}[(1)]
+    \setlength{\itemsep}{10pt}
+    \item \blue{\it pointwise continuous} (连续的) if
+      for every $x \in \mathbb{R}$
+      and every real number $\epsilon > 0$,
+      there exists real $\delta > 0$ such that
+      for every $y \in \mathbb{R}$ with $|x - y| < \delta$,
+      we have that $|f(x) -  f(y)|< \epsilon$.
+    \item \blue{\it uniformly continuous} (一致连续的) if
+      for every real number $\epsilon > 0$,
+      there exists real $\delta > 0$ such that
+      for every $x, y \in \mathbb{R}$ with $|x - y| < \delta$,
+      we have that $|f(x) -  f(y)|< \epsilon$.
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先把“$\delta$ 是否依赖于 $x$”写成量词次序的差异, 再由量词前束判断两种定义的强弱关系。
+  \end{intention}
+
+  取论域为 $\mathbb{R}$。
+  语言中包含常元 $0$, 函数符号 $f$, 减法 $-$, 绝对值 $|\cdot|$, 以及二元关系符号 $<$。
+
+  \begin{enumerate}[(1)]
+    \item 点态连续（pointwise continuous）可形式化为
+      \[
+        \mathrm{PC}(f) \triangleq
+        \forall x\; \forall \epsilon\; \Bigl(
+          0 < \epsilon \to
+          \exists \delta\; \bigl(
+            0 < \delta
+            \land
+            \forall y\; (|x - y| < \delta \to |f(x) - f(y)| < \epsilon)
+          \bigr)
+        \Bigr).
+      \]
+
+    \item 一致连续（uniformly continuous）可形式化为
+      \[
+        \mathrm{UC}(f) \triangleq
+        \forall \epsilon\; \Bigl(
+          0 < \epsilon \to
+          \exists \delta\; \bigl(
+            0 < \delta
+            \land
+            \forall x\; \forall y\; (|x - y| < \delta \to |f(x) - f(y)| < \epsilon)
+          \bigr)
+        \Bigr).
+      \]
+  \end{enumerate}
+
+  为了比较二者强弱, 记
+  \[
+    A(x, \epsilon, \delta) \triangleq
+    \forall y\; (|x - y| < \delta \to |f(x) - f(y)| < \epsilon).
+  \]
+  则
+  \[
+    \mathrm{PC}(f)
+    \equiv
+    \forall x\; \forall \epsilon\; (0 < \epsilon \to \exists \delta\; (0 < \delta \land A(x, \epsilon, \delta))),
+  \]
+  \[
+    \mathrm{UC}(f)
+    \equiv
+    \forall \epsilon\; (0 < \epsilon \to \exists \delta\; (0 < \delta \land \forall x\; A(x, \epsilon, \delta))).
+  \]
+
+  下面说明
+  \[
+    \mathrm{UC}(f) \vdash \mathrm{PC}(f).
+  \]
+  任取 $x \in \mathbb{R}$ 与 $\epsilon > 0$。
+  由 $\mathrm{UC}(f)$, 可得某个 $\delta > 0$ 使得
+  \[
+    \forall u\; A(u, \epsilon, \delta).
+  \]
+  对该全称式作 $\forall$-消去, 取 $u := x$, 得
+  \[
+    A(x, \epsilon, \delta),
+  \]
+  即
+  \[
+    \forall y\; (|x - y| < \delta \to |f(x) - f(y)| < \epsilon).
+  \]
+  因而同一个 $\delta$ 就可作为点 $x$ 处关于 $\epsilon$ 的见证元。
+  既然 $x, \epsilon$ 任意, 故
+  \[
+    \mathrm{UC}(f) \vdash \mathrm{PC}(f).
+  \]
+
+  反之,
+  \[
+    \mathrm{PC}(f) \nvdash \mathrm{UC}(f).
+  \]
+  根本原因是: 在 $\mathrm{PC}(f)$ 中, 量词前束为
+  \[
+    \forall x\; \forall \epsilon\; \exists \delta\; \cdots,
+  \]
+  这里的 $\delta$ 可以依赖于 $x$;
+  而在 $\mathrm{UC}(f)$ 中, 前束为
+  \[
+    \forall \epsilon\; \exists \delta\; \forall x\; \cdots,
+  \]
+  这里要求同一个 $\delta$ 同时适用于所有 $x$。
+  这显然更强。
+
+  语义上, 反向蕴含也确实不成立。例如函数
+  \[
+    f(x) = x^{2}
+  \]
+  在 $\mathbb{R}$ 上点态连续, 但并非一致连续。
+
+  综上,
+  \[
+    \mathrm{UC}(f) \text{ 比 } \mathrm{PC}(f) \text{ 更强},
+    \qquad
+    \mathrm{PC}(f) \text{ 比 } \mathrm{UC}(f) \text{ 更弱}.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 两个定义的本质差异只在量词次序: $\delta$ 是否允许依赖于 $x$。
+    \textbf{难点.} 不能把 $\forall x\, \exists \delta$ 与 $\exists \delta\, \forall x$ 互换。
+    \textbf{易错点.} 一致连续要求“同一个 $\delta$ 对所有 $x$ 都有效”, 这比普通连续强得多。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(a)]
+    \item 正确写出点态连续的量词结构: \score{3}
+    \item 正确写出一致连续的量词结构: \score{3}
+    \item 说明 $\mathrm{UC}(f) \vdash \mathrm{PC}(f)$: \score{2}
+    \item 说明反向不成立的量词原因: \score{1}
+    \item 给出语义反例或明确结论: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 自然推理系统]
+  给定如下``前提'', 请判断``结论''是否有效。
+  请在一阶谓词逻辑的自然推理系统中完成。
+
+  {\bf 前提:}
+  \begin{enumerate}[(1)]
+    \item 每个人或者喜欢美剧, 或者喜欢韩剧 (可以同时喜欢二者);
+    \item 任何人如果他喜欢抗日神剧, 他就不喜欢美剧;
+    \item 有的人不喜欢韩剧。
+  \end{enumerate}
+
+  \vspace{0.20cm}
+  \noindent {\bf 结论:} 有的人不喜欢抗日神剧 ({\it 幸亏如此})。
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先把三条前提形式化; 然后从“不喜欢韩剧”的见证人出发, 用析取消去和反证法推出他不喜欢抗日神剧。
+  \end{intention}
+
+  取论域为“所有人”。记
+  \begin{align*}
+    &M(x): x \text{ 喜欢美剧}, \\
+    &K(x): x \text{ 喜欢韩剧}, \\
+    &A(x): x \text{ 喜欢抗日神剧}.
+  \end{align*}
+  则三条前提与结论分别形式化为
+  \[
+    \forall x\; (M(x) \lor K(x)),
+    \qquad
+    \forall x\; (A(x) \to \lnot M(x)),
+    \qquad
+    \exists x\; \lnot K(x),
+  \]
+  以及
+  \[
+    \exists x\; \lnot A(x).
+  \]
+
+  该结论\textbf{有效}。证明如下:
+
+  \begin{logicproof}{4}
+    \forall x\; (M(x) \lor K(x)) & premise \\
+    \forall x\; (A(x) \to \lnot M(x)) & premise \\
+    \exists x\; \lnot K(x) & premise \\
+    \begin{subproof}
+      x_0 & fresh \\
+      \lnot K(x_0) & assumption \\
+      M(x_0) \lor K(x_0) & \forallxelim 1 \\
+      \begin{subproof}
+        M(x_0) & assumption \\
+        \begin{subproof}
+          A(x_0) & assumption \\
+          A(x_0) \to \lnot M(x_0) & \forallxelim 2 \\
+          \lnot M(x_0) & \toelim 10, 9 \\
+          \bot & \lnotelim 8, 11
+        \end{subproof}
+        \lnot A(x_0) & \lnotintro 9--12
+      \end{subproof} \\
+      \begin{subproof}
+        K(x_0) & assumption \\
+        \bot & \lnotelim 6, 14 \\
+        \lnot A(x_0) & \botelim 15
+      \end{subproof} \\
+      \lnot A(x_0) & \lorelim 7, 8--13, 14--16 \\
+      \exists x\; \lnot A(x) & \existsxintro 17
+    \end{subproof} \\
+    \exists x\; \lnot A(x) & \existsxelim 3, 4--18
+  \end{logicproof}
+
+  \begin{remark}
+    \textbf{重点.} 由前提 (3) 先找到一个具体的人 $x_0$, 再围绕该见证人做自然推理。
+    \textbf{难点.} 证明 $\lnot A(x_0)$ 时, 需要在“$M(x_0)$”这一分支内再作一次反证。
+    \textbf{易错点.} 在 $\exists$-消去里引入的 $x_0$ 必须是 fresh, 不能泄漏到盒子外面。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(a)]
+    \item 正确完成谓词化: \score{2}
+    \item 由 $\exists x\; \lnot K(x)$ 引入 fresh 见证人: \score{2}
+    \item 对 $M(x_0) \lor K(x_0)$ 正确使用 $\lor$-消去: \score{3}
+    \item 在第一分支中由反证得到 $\lnot A(x_0)$: \score{2}
+    \item 用 $\exists$-引入与 $\exists$-消去得到结论: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[一阶谓词逻辑: 自然推理系统]
+  请使用一阶谓词逻辑的自然推理系统证明:
+  \begin{enumerate}[(1)]
+    \item $\forall x.\; (P(x) \to Q(x)) \vdash
+      (\forall x.\; \lnot Q(x)) \to (\forall x\; \lnot P(x))$
+    \item $\forall x\; (\phi \land \psi) \vdash
+      (\forall x\; \phi) \land (\forall x\; \psi)$
+    \item $(\exists x\; \phi) \lor (\exists x\; \psi) \vdash
+      \exists x\; (\phi \lor \psi)$
+    \item $\forall x\; \forall y\; \phi \vdash \forall y\; \forall x\; \phi$
+    \item $\exists x\; \exists y\; \phi \vdash
+      \exists y\; \exists x\; \phi$
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+  \begin{enumerate}[(1)]
+    \item
+      \begin{intention}
+        先假设 $\forall x\; \lnot Q(x)$, 再对任意 fresh 元 $x_0$ 证明 $\lnot P(x_0)$, 最后做两次全称/蕴含引入。
+      \end{intention}
+
+      \begin{logicproof}{4}
+        \forall x\; (P(x) \to Q(x)) & premise \\
+        \begin{subproof}
+          \forall x\; \lnot Q(x) & assumption \\
+          \begin{subproof}
+            x_0 & fresh \\
+            \begin{subproof}
+              P(x_0) & assumption \\
+              P(x_0) \to Q(x_0) & \forallxelim 1 \\
+              Q(x_0) & \toelim 5, 6 \\
+              \lnot Q(x_0) & \forallxelim 2 \\
+              \bot & \lnotelim 8, 7
+            \end{subproof}
+            \lnot P(x_0) & \lnotintro 4--8
+          \end{subproof} \\
+          \forall x\; \lnot P(x) & \forallxintro 3--9
+        \end{subproof} \\
+        (\forall x\; \lnot Q(x)) \to (\forall x\; \lnot P(x)) & \tointro 2--10
+      \end{logicproof}
+
+      \begin{remark}
+        \textbf{重点.} 目标是一个蕴含式, 先用 $\to$-引入; 目标内部又是全称式, 再对 arbitrary 的 $x_0$ 证明。
+        \textbf{易错点.} $\forall x\; \lnot Q(x)$ 不能直接改写成 $\lnot Q(x_0)$; 必须通过 $\forall$-消去得到。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 正确使用 $\to$-引入假设 $\forall x\; \lnot Q(x)$: \score{2}
+        \item 引入 fresh 的 $x_0$: \score{2}
+        \item 由前提推出 $Q(x_0)$: \score{2}
+        \item 与 $\lnot Q(x_0)$ 构成矛盾并得 $\lnot P(x_0)$: \score{3}
+        \item 完成 $\forall$-引入与 $\to$-引入: \score{1}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        从 $\forall x\; (\phi \land \psi)$ 出发, 对同一个 arbitrary 元同时抽出 $\phi$ 与 $\psi$, 然后分别做全称引入再合取。
+      \end{intention}
+
+      \begin{logicproof}{3}
+        \forall x\; (\phi \land \psi) & premise \\
+        \begin{subproof}
+          x_0 & fresh \\
+          (\phi \land \psi)[x_0/x] & \forallxelim 1 \\
+          \phi[x_0/x] & \landelimleft 3 \\
+          \psi[x_0/x] & \landelimright 3
+        \end{subproof} \\
+        \forall x\; \phi & \forallxintro 2--4 \\
+        \forall x\; \psi & \forallxintro 2--5 \\
+        (\forall x\; \phi) \land (\forall x\; \psi) & \landintro 7, 8
+      \end{logicproof}
+
+      \begin{remark}
+        \textbf{重点.} 同一个 fresh 元 $x_0$ 上同时得到两条结论, 再分别全称化。
+        \textbf{易错点.} 不能直接从 $\forall x\; (\phi \land \psi)$ 跳到 $(\forall x\; \phi) \land (\forall x\; \psi)$, 中间必须经过 $\forall$-消去和 $\forall$-引入。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 引入 fresh 的 $x_0$: \score{2}
+        \item 对前提作 $\forall$-消去: \score{2}
+        \item 正确抽出 $\phi[x_0/x]$: \score{2}
+        \item 正确抽出 $\psi[x_0/x]$: \score{2}
+        \item 完成两次 $\forall$-引入与一次合取引入: \score{2}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        先对最外层析取分情况; 每个分支里再对存在量词取 fresh 见证元, 最后用同一个见证元引入 $\exists x\; (\phi \lor \psi)$。
+      \end{intention}
+
+      \begin{logicproof}{4}
+        (\exists x\; \phi) \lor (\exists x\; \psi) & premise \\
+        \begin{subproof}
+          \exists x\; \phi & assumption \\
+          \begin{subproof}
+            x_0 & fresh \\
+            \phi[x_0/x] & assumption \\
+            \phi[x_0/x] \lor \psi[x_0/x] & \lorintroleft 4 \\
+            \exists x\; (\phi \lor \psi) & \existsxintro 5
+          \end{subproof} \\
+          \exists x\; (\phi \lor \psi) & \existsxelim 2, 3--6
+        \end{subproof} \\
+        \begin{subproof}
+          \exists x\; \psi & assumption \\
+          \begin{subproof}
+            y_0 & fresh \\
+            \psi[y_0/x] & assumption \\
+            \phi[y_0/x] \lor \psi[y_0/x] & \lorintroright 11 \\
+            \exists x\; (\phi \lor \psi) & \existsxintro 12
+          \end{subproof} \\
+          \exists x\; (\phi \lor \psi) & \existsxelim 9, 10--13
+        \end{subproof} \\
+        \exists x\; (\phi \lor \psi) & \lorelim 1, 2--7, 9--14
+      \end{logicproof}
+
+      \begin{remark}
+        \textbf{重点.} 证明顺序是“先 $\lor$-消去, 后 $\exists$-消去”。
+        \textbf{难点.} 两个存在分支各自的见证元都必须 fresh, 且只在各自盒子里使用。
+        \textbf{易错点.} 不能直接从 $\exists x\; \phi$ 写出 $\phi[t/x]$; 必须通过 $\exists$-消去引入新见证元。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 对最外层析取作正确分情况: \score{2}
+        \item 在左分支中完成 $\exists$-消去与 $\exists$-引入: \score{3}
+        \item 在右分支中完成 $\exists$-消去与 $\exists$-引入: \score{3}
+        \item 两个分支都正确构造 $\phi \lor \psi$: \score{1}
+        \item 用 $\lorelim$ 合并结论: \score{1}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        先固定一个 arbitrary 的 $y_0$, 再固定一个 arbitrary 的 $x_0$, 由两次全称消去得到实例式, 最后反向做两次全称引入。
+      \end{intention}
+
+      \begin{logicproof}{4}
+        \forall x\; \forall y\; \phi & premise \\
+        \begin{subproof}
+          y_0 & fresh \\
+          \begin{subproof}
+            x_0 & fresh \\
+            \forall y\; \phi[x_0/x] & \forallxelim 1 \\
+            \phi[x_0/x, y_0/y] & \forallyelim 4
+          \end{subproof} \\
+          \forall x\; \phi[y_0/y] & \forallxintro 3--5
+        \end{subproof} \\
+        \forall y\; \forall x\; \phi & \forallyintro 2--6
+      \end{logicproof}
+
+      \begin{remark}
+        \textbf{重点.} 交换两个全称量词时, 只需对两个 arbitrary 元依次实例化、再依次全称化。
+        \textbf{易错点.} 做 $\forall y$-引入前, $y_0$ 不能出现在任何未解除的特殊假设中。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 正确引入 fresh 的 $y_0$: \score{2}
+        \item 正确引入 fresh 的 $x_0$: \score{2}
+        \item 两次 $\forall$-消去得到实例式: \score{2}
+        \item 完成 $\forall x$-引入: \score{2}
+        \item 完成 $\forall y$-引入: \score{2}
+      \end{enumerate}
+
+    \item
+      \begin{intention}
+        对两个存在量词依次做消去, 取得两个 fresh 见证元后, 按相反顺序重新引入存在量词。
+      \end{intention}
+
+      \begin{logicproof}{4}
+        \exists x\; \exists y\; \phi & premise \\
+        \begin{subproof}
+          x_0 & fresh \\
+          \exists y\; \phi[x_0/x] & assumption \\
+          \begin{subproof}
+            y_0 & fresh \\
+            \phi[x_0/x, y_0/y] & assumption \\
+            \exists x\; \phi[y_0/y] & \existsxintro 5 \\
+            \exists y\; \exists x\; \phi & \existsyintro 6
+          \end{subproof} \\
+          \exists y\; \exists x\; \phi & \existsyelim 3, 4--7
+        \end{subproof} \\
+        \exists y\; \exists x\; \phi & \existsxelim 1, 2--8
+      \end{logicproof}
+
+      \begin{remark}
+        \textbf{重点.} 先把两个存在见证元“取出来”, 再按目标所要求的顺序“放回去”。
+        \textbf{难点.} 内层 $y_0$ 的盒子结束后, 只能保留与 $y_0$ 无自由出现的结论。
+        \textbf{易错点.} $\exists$-消去中的 fresh 见证元不能出现在盒子外的未解除假设与目标式中。
+      \end{remark}
+
+      \textbf{分值分配（10分）.}
+      \begin{enumerate}[(a)]
+        \item 正确对最外层 $\exists x$ 作消去: \score{2}
+        \item 正确对内层 $\exists y$ 作消去: \score{2}
+        \item 从实例式引入 $\exists x\; \phi[y_0/y]$: \score{2}
+        \item 进一步引入 $\exists y\; \exists x\; \phi$: \score{2}
+        \item 完成两次存在消去的封闭: \score{2}
+      \end{enumerate}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
