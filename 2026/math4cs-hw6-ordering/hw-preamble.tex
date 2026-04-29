@@ -19,6 +19,7 @@
 \newcommand{\teal}[1]{\textcolor{teal}{#1}}
 
 \usepackage{todonotes}
+\usepackage[shortlabels]{enumitem}
 
 % heading
 \usepackage{sectsty}
@@ -125,6 +126,10 @@
 \theorempostwork{\bigskip\hrule}
 \theoremsymbol{\ensuremath{\Box}}
 \newtheorem*{proof}{证明}
+
+\newenvironment{intention}
+  {\par\smallskip\noindent\textbf{命题意图. }\ignorespaces}
+  {\par\smallskip}
 
 % \newcommand{\ot}{\blue{\bf [OT]}}
 

@@ -1,0 +1,696 @@
+% math4cs-hw6-ordering-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (7-ordering: 序关系)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年4月17日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[拟序、等价关系、偏序]
+  一个自反且传递的二元关系 $R \subseteq X \times X$
+  称为 $X$ 上的拟序 (或预序)。
+  \footnote{
+    The name {\it preorder} is meant to suggest that
+    preorders are {\it almost} partial orders,
+    but not quite, as they are not necessarily antisymmetric.
+  }
+
+  现令 $\preceq\; \subseteq X \times X$ 为拟序。
+
+  \begin{enumerate}[(1)]
+    \item 如下定义 $X$ 上的关系 $\sim$:
+      \[
+        x \sim y \triangleq x \preceq y \land y \preceq x.
+      \]
+      请证明~\footnote{你在 \textsl{hw4} 中已经做过这个证明了,
+      不必重做。可以直接在第二问中使用该结论。}, $\sim$ 是 $X$ 上的等价关系。
+      \footnote{Each preorder induces an {\it equivalence relation}
+        between elements according to $\sim$,
+        which is similar to the {\it antisymmetric} property.}
+    \item 如下定义商集 $X/\sim$ 上的关系 $\le$:
+      \[
+        [x]_{\sim} \le [y]_{\sim} \triangleq x \preceq y.
+      \]
+      请证明, $\le$ 是偏序关系。
+      \footnote{Preorders can be turned into partial orders
+        by identifying all elements that are equivalent
+        with respect to $\sim$.}
+    \item 接下来考虑整数集合 $\Z$ 上的整除关系 $\mid$。
+      \begin{itemize}
+        \item 请证明, $\mid$ 是一个拟序。
+        \item 请给出元素 $x \in \Z$ 的等价类 $[x]_{\sim}$。
+        \item 请描述商集 $\Z/\sim$ 上的偏序关系 $\le$。
+        \item 请说明, 等价关系 $\sim$ 提供了什么样的``抽象''?
+      \end{itemize}
+    \item 接下来考察有向图 $G = (V, E)$ 上~\footnote{
+        $V$ 是顶点集合, $E \subseteq V \times V$ 是边集合。}
+        \mfig{width = 0.90\textwidth}{figs/scc}
+      的可达关系 $\leadsto$。
+      \footnote{对于 $v, w \in V$, $v \leadsto w$ 表示存在一条从 $v$ 到 $w$ 的路径。}
+      \begin{itemize}
+        \item 请证明, $\leadsto$ 是一个拟序。
+        \item 请给出顶点 $v \in V$ 的等价类 $[v]_{\sim}$。
+        \item 请描述商集 $V/\sim$ 上的偏序关系 $\le$。
+        \item 请说明, 等价关系 $\sim$ 提供了什么样的``抽象''?
+      \end{itemize}
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    先把拟序的 ``双向可比部分'' 提炼成等价关系, 再在商集上压缩掉这些等价元素, 从而得到偏序。后两问分别把这个抽象过程落实到整除关系与可达关系。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item 下证 $\sim$ 是 $X$ 上的等价关系。
+
+      \begin{enumerate}[(i)]
+        \item \textbf{自反性.} 对任意 $x \in X$, 由于 $\preceq$ 自反,
+          \[
+            x \preceq x.
+          \]
+          故
+          \[
+            x \preceq x \land x \preceq x,
+          \]
+          即 $x \sim x$。
+
+        \item \textbf{对称性.} 对任意 $x, y \in X$, 若 $x \sim y$, 则
+          \[
+            x \preceq y \land y \preceq x.
+          \]
+          交换两个合取项得
+          \[
+            y \preceq x \land x \preceq y,
+          \]
+          即 $y \sim x$。
+
+        \item \textbf{传递性.} 对任意 $x, y, z \in X$, 若 $x \sim y$ 且 $y \sim z$, 则
+          \[
+            x \preceq y, \qquad y \preceq x,
+            \qquad y \preceq z, \qquad z \preceq y.
+          \]
+          由 $\preceq$ 的传递性,
+          \[
+            x \preceq z,
+            \qquad
+            z \preceq x.
+          \]
+          故 $x \sim z$。
+      \end{enumerate}
+
+      因而 $\sim$ 是 $X$ 上的等价关系。
+
+    \item 下证 $\le$ 是商集 $X/\sim$ 上的偏序关系。
+
+      先证 \textbf{良定义}。若
+      \[
+        [x]_{\sim} = [x']_{\sim},
+        \qquad
+        [y]_{\sim} = [y']_{\sim},
+        \qquad
+        x \preceq y,
+      \]
+      则
+      \[
+        x' \sim x,
+        \qquad
+        y \sim y'.
+      \]
+      从而
+      \[
+        x' \preceq x,
+        \qquad
+        y \preceq y'.
+      \]
+      再由传递性,
+      \[
+        x' \preceq x \preceq y \preceq y',
+      \]
+      故
+      \[
+        x' \preceq y',
+      \]
+      即
+      \[
+        [x']_{\sim} \le [y']_{\sim}.
+      \]
+      因而 $\le$ 良定义。
+
+      再证三条偏序公理。
+
+      \begin{enumerate}[(i)]
+        \item \textbf{自反性.} 对任意 $[x]_{\sim} \in X/\sim$, 由 $\preceq$ 自反,
+          \[
+            x \preceq x,
+          \]
+          故
+          \[
+            [x]_{\sim} \le [x]_{\sim}.
+          \]
+
+        \item \textbf{反对称性.} 若
+          \[
+            [x]_{\sim} \le [y]_{\sim}
+            \qquad \text{且} \qquad
+            [y]_{\sim} \le [x]_{\sim},
+          \]
+          则
+          \[
+            x \preceq y
+            \qquad \text{且} \qquad
+            y \preceq x.
+          \]
+          故 $x \sim y$, 从而
+          \[
+            [x]_{\sim} = [y]_{\sim}.
+          \]
+
+        \item \textbf{传递性.} 若
+          \[
+            [x]_{\sim} \le [y]_{\sim}
+            \qquad \text{且} \qquad
+            [y]_{\sim} \le [z]_{\sim},
+          \]
+          则
+          \[
+            x \preceq y
+            \qquad \text{且} \qquad
+            y \preceq z.
+          \]
+          由 $\preceq$ 的传递性,
+          \[
+            x \preceq z.
+          \]
+          故
+          \[
+            [x]_{\sim} \le [z]_{\sim}.
+          \]
+      \end{enumerate}
+
+      因而 $\le$ 是偏序关系。
+
+    \item 现考虑 $(\Z, \mid)$。
+
+      \begin{enumerate}[(a)]
+        \item \textbf{$\mid$ 是拟序.}
+
+          自反性: 对任意 $x \in \Z$,
+          \[
+            x = 1 \cdot x,
+          \]
+          故 $x \mid x$。
+
+          传递性: 若 $x \mid y$ 且 $y \mid z$, 则存在 $m, n \in \Z$ 使得
+          \[
+            y = mx,
+            \qquad
+            z = ny.
+          \]
+          从而
+          \[
+            z = n(mx) = (nm)x,
+          \]
+          故 $x \mid z$。
+
+          因而 $\mid$ 是拟序。
+
+        \item \textbf{等价类 $[x]_{\sim}$.}
+
+          由定义,
+          \[
+            x \sim y
+            \iff x \mid y \land y \mid x.
+          \]
+
+          若 $x = 0$, 则由 $y \mid 0$ 与 $0 \mid y$ 可得 $y = 0$,
+          故
+          \[
+            [0]_{\sim} = \set{0}.
+          \]
+
+          若 $x \neq 0$, 且 $x \sim y$, 则存在 $a, b \in \Z$ 使得
+          \[
+            y = ax,
+            \qquad
+            x = by.
+          \]
+          于是
+          \[
+            x = b(ax) = (ab)x.
+          \]
+          由于 $x \neq 0$, 得
+          \[
+            ab = 1.
+          \]
+          在整数中这只可能发生于
+          \[
+            a = b = 1
+            \qquad \text{或} \qquad
+            a = b = -1.
+          \]
+          故 $y = x$ 或 $y = -x$。
+
+          反过来, 显然
+          \[
+            x \mid x,
+            \qquad
+            x \mid (-x),
+            \qquad
+            (-x) \mid x.
+          \]
+          故当 $x \neq 0$ 时,
+          \[
+            [x]_{\sim} = \set{x, -x}.
+          \]
+
+        \item \textbf{商集上的偏序关系.}
+
+          映射
+          \[
+            \Phi : \Z/\sim \to \set{0} \cup \Z_{>0},
+            \qquad
+            \Phi([x]_{\sim}) = |x|
+          \]
+          是双射, 且
+          \[
+            [x]_{\sim} \le [y]_{\sim}
+            \iff x \mid y
+            \iff |x| \mid |y|.
+          \]
+          因而 $\Z/\sim$ 上的偏序, 就是把正负号压缩之后得到的 ``按绝对值整除'' 的偏序。
+
+        \item \textbf{抽象的含义.}
+
+          等价关系 $\sim$ 把只相差一个符号的整数识别为同一个对象:
+          \[
+            x \sim y \iff |x| = |y|.
+          \]
+          因而该抽象忘掉了 ``正负'', 只保留 ``大小的整除结构''。
+      \end{enumerate}
+
+    \item 现考虑有向图 $G = (V, E)$ 上的可达关系 $\leadsto$。
+
+      \begin{enumerate}[(a)]
+        \item \textbf{$\leadsto$ 是拟序.}
+
+          自反性: 对任意 $v \in V$, 存在从 $v$ 到 $v$ 的长度为 $0$ 的路径,
+          故
+          \[
+            v \leadsto v.
+          \]
+
+          传递性: 若 $u \leadsto v$ 且 $v \leadsto w$, 则存在从 $u$ 到 $v$ 的路径与从 $v$ 到 $w$ 的路径。将二者首尾连接, 得到从 $u$ 到 $w$ 的路径, 故
+          \[
+            u \leadsto w.
+          \]
+
+          因而 $\leadsto$ 是拟序。
+
+        \item \textbf{等价类 $[v]_{\sim}$.}
+
+          由定义,
+          \[
+            v \sim w
+            \iff v \leadsto w \land w \leadsto v.
+          \]
+          因而
+          \[
+            [v]_{\sim} = \set{w \in V \mid v \leadsto w \land w \leadsto v}.
+          \]
+          这正是顶点 $v$ 所在的强连通分量 (strongly connected component, SCC)。
+
+        \item \textbf{商集上的偏序关系.}
+
+          商集 $V/\sim$ 上的关系由
+          \[
+            [v]_{\sim} \le [w]_{\sim}
+            \iff v \leadsto w
+          \]
+          给出。由第 (2) 问, 该关系良定义且构成偏序。
+          换言之, 这就是把每个 SCC 缩成一个点之后得到的可达偏序;
+          其 Hasse 图对应于 SCC condensation graph 的无环骨架。
+
+        \item \textbf{抽象的含义.}
+
+          等价关系 $\sim$ 把 ``彼此可达'' 的顶点识别为同一个对象, 即把每个 SCC 压缩成一个点。该抽象忘掉了 SCC 内部的回路细节, 只保留不同 SCC 之间的可达先后关系。
+      \end{enumerate}
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} 从拟序到偏序的关键步骤不是直接加上反对称性, 而是先用
+    $x \sim y \iff x \preceq y \land y \preceq x$
+    做商。\par
+    \textbf{难点.} 第 (2) 问的实质是证明商集上的顺序 \emph{良定义}; 代表元不同, 结论不能变。\par
+    \textbf{易错点.} 在 $\Z$ 的整除关系中, $x \mid y \land y \mid x$ 一般不能推出 $x = y$, 只能推出 $y = \pm x$; 这正是它是拟序而不是偏序的原因。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确证明 $\sim$ 是等价关系: \score{2}
+    \item 正确证明商集上的 $\le$ 良定义并满足偏序三公理: \score{3}
+    \item 正确分析 $(\Z, \mid)$ 的拟序性与等价类: \score{2}
+    \item 正确描述 $\Z/\sim$ 上的偏序及其抽象含义: \score{1}
+    \item 正确分析可达关系的拟序性、等价类与商偏序: \score{2}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[偏序]
+  令 $X, Y$ 为集合, 定义
+  \[
+    Fn(X, Y) = \bigcup_{Z \subseteq X} Y^Z.
+  \]
+  即, $Fn(X, Y)$ 是由 $X$ 的子集到 $Y$ 的所有函数组成的集合。
+
+  \noindent 请证明, $\subseteq$ 是 $Fn(X, Y)$ 上的偏序关系。
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    将 $Fn(X, Y)$ 中的函数都看成有序对的集合, 则题目就退化为 ``集合包含关系在一个集合族上构成偏序''。
+  \end{intention}
+
+  任取 $f, g, h \in Fn(X, Y)$。由于每个函数本身都是有序对的集合, 故对它们讨论 $\subseteq$ 是有意义的。
+
+  \begin{enumerate}[(1)]
+    \item \textbf{自反性.}
+      \[
+        f \subseteq f.
+      \]
+
+    \item \textbf{反对称性.} 若
+      \[
+        f \subseteq g
+        \qquad \text{且} \qquad
+        g \subseteq f,
+      \]
+      则由集合的反对称性,
+      \[
+        f = g.
+      \]
+
+    \item \textbf{传递性.} 若
+      \[
+        f \subseteq g
+        \qquad \text{且} \qquad
+        g \subseteq h,
+      \]
+      则由集合包含关系的传递性,
+      \[
+        f \subseteq h.
+      \]
+  \end{enumerate}
+
+  因而 $\subseteq$ 在 $Fn(X, Y)$ 上满足自反性、反对称性与传递性, 故它是 $Fn(X, Y)$ 上的偏序关系。
+
+  \begin{remark}
+    \textbf{重点.} 函数在集合论中本来就是一组有序对, 因而可以直接比较包含关系。\par
+    \textbf{难点.} 这里的顺序不是点态大小比较, 而是 ``作为图像集合的包含''。\par
+    \textbf{易错点.} 不必另外证明 ``若 $f \subseteq g$ 则 $f$ 仍是函数''; 因为题目只要求验证 $Fn(X,Y)$ 上的关系满足偏序公理。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 明确将函数视为有序对集合: \score{1}
+    \item 正确证明自反性: \score{3}
+    \item 正确证明反对称性: \score{3}
+    \item 正确证明传递性并得出偏序结论: \score{3}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[上确界、下确界]
+  令 $X \neq \emptyset$。
+  在课堂上, 我们已经证明 $(\pow{X}, \subseteq)$ 是偏序集。
+
+  \noindent 请给出任意 $S \subseteq \pow{X}$ 的上确界与下确界的表达式
+  (无需证明)。
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    在包含偏序下, 上界就是 ``把所有集合都装进去'', 下界就是 ``同时落在所有集合里''。因此答案应分别是并集与交集。
+  \end{intention}
+
+  对任意 $S \subseteq \pow{X}$,
+  \[
+    \sup(S) = \bigcup_{A \in S} A,
+    \qquad
+    \inf(S) = \bigcap_{A \in S} A.
+  \]
+
+  特别地, 当 $S = \emptyset$ 时,
+  \[
+    \sup(\emptyset) = \emptyset,
+    \qquad
+    \inf(\emptyset) = X.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 在 $(\pow{X}, \subseteq)$ 中, ``上'' 对应更大的集合, ``下'' 对应更小的集合。\par
+    \textbf{难点.} 上确界与下确界的方向容易被直觉说反。\par
+    \textbf{易错点.} 不能把上确界写成交集、把下确界写成并集; 那是把偏序方向看反了。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确给出 $\sup(S)$ 的表达式: \score{5}
+    \item 正确给出 $\inf(S)$ 的表达式: \score{5}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[集合划分与精化关系]
+  令 $X \neq \emptyset$ 为任意集合。
+  令 $Pt(X)$ 表示 $X$ 的所有划分组成的集合。
+
+  \noindent 如下定义 $Pt(X)$ 上的精化 (refinement) 关系 $\le$:
+  \[
+    \alpha \le \beta \iff
+      \forall A \in \alpha\; \exists B \in \beta\; A \subseteq B.
+  \]
+  在课堂上我们已经证明, ($Pt(X)$, $\le$) 是偏序集。
+
+  \fig{width = 0.50\textwidth}{figs/set-partition-refinement}
+
+  \begin{enumerate}[(1)]
+    \item 请证明, 任意 $S \subseteq Pt(X)$ 都有上确界, 并给出上确界的表达式。
+    \item 请给出任意 $S \subseteq Pt(X)$ 的下确界的表达式。
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    在精化偏序下, 下确界是 ``把所有划分同时细化'' 的公共细化, 即非空交块; 上确界则是 ``只做必要合并'' 的最细公共粗化, 可由有限链连通生成。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item 对每个 $\alpha \in Pt(X)$, 记其诱导的等价关系为
+      \[
+        x \equiv_{\alpha} y
+        \iff
+        \exists A \in \alpha\; (x \in A \land y \in A).
+      \]
+      在 $X$ 上定义关系 $\approx$:
+      \[
+        x \approx y
+        \iff
+        \exists n \ge 0\; \exists x_0, x_1, \dots, x_n \in X
+      \]
+      使得
+      \[
+        x = x_0,
+        \qquad
+        y = x_n,
+        \qquad
+        \forall i \in \set{1, 2, \dots, n}\; \exists \alpha_i \in S\; x_{i-1} \equiv_{\alpha_i} x_i.
+      \]
+
+      这是一个等价关系:
+      \begin{enumerate}[(i)]
+        \item 自反性: 取 $n = 0$。
+        \item 对称性: 反向读一条链即可。
+        \item 传递性: 将两条链首尾拼接即可。
+      \end{enumerate}
+      因而 $X/\approx \in Pt(X)$。
+
+      下证
+      \[
+        \sup(S) = X/\approx.
+      \]
+
+      先证 $X/\approx$ 是 $S$ 的上界。任取 $\alpha \in S$ 与 $A \in \alpha$。若 $x, y \in A$, 则
+      \[
+        x \equiv_{\alpha} y,
+      \]
+      故由长度为 $1$ 的链可知 $x \approx y$。于是
+      \[
+        A \subseteq [x]_{\approx}.
+      \]
+      这说明
+      \[
+        \alpha \le X/\approx.
+      \]
+      因而 $X/\approx$ 是上界。
+
+      再证其为最小上界。设 $\beta \in Pt(X)$ 是任意上界, 即
+      \[
+        \forall \alpha \in S\; \alpha \le \beta.
+      \]
+      任取 $x \approx y$, 取见证链
+      \[
+        x = x_0, x_1, \dots, x_n = y.
+      \]
+      对每个 $i = 1, \dots, n$, 有某个 $\alpha_i \in S$ 使得
+      \[
+        x_{i-1} \equiv_{\alpha_i} x_i.
+      \]
+      由 $\alpha_i \le \beta$, 得 $x_{i-1}$ 与 $x_i$ 落在 $\beta$ 的同一个块中。块关系具有传递性, 故 $x$ 与 $y$ 落在 $\beta$ 的同一个块中。于是
+      \[
+        [x]_{\approx} \subseteq B
+      \]
+      对某个 $B \in \beta$ 成立, 从而
+      \[
+        X/\approx \le \beta.
+      \]
+      故 $X/\approx$ 是最小上界。
+
+      因而任意 $S \subseteq Pt(X)$ 都有上确界, 且
+      \[
+        \sup(S) = X/\approx,
+      \]
+      其中 $\approx$ 是由所有 $\alpha \in S$ 的同块关系生成的最小等价关系。
+
+    \item 任意 $S \subseteq Pt(X)$ 的下确界为
+      \[
+        \inf(S)
+        = \set{
+            \bigcap_{\alpha \in S} A_{\alpha}
+            \;\bigg|\;
+            \forall \alpha \in S\; A_{\alpha} \in \alpha,
+            \ \bigcap_{\alpha \in S} A_{\alpha} \neq \emptyset
+          }.
+      \]
+
+      记上式右端为 $\Pi$。先说明 $\Pi \in Pt(X)$。
+
+      对任意 $x \in X$, 对每个 $\alpha \in S$ 取 $\alpha$ 中包含 $x$ 的唯一块 $A_{\alpha}$, 则
+      \[
+        x \in \bigcap_{\alpha \in S} A_{\alpha} \in \Pi,
+      \]
+      故 $\Pi$ 覆盖 $X$。
+
+      若
+      \[
+        C = \bigcap_{\alpha \in S} A_{\alpha} \in \Pi,
+        \qquad
+        D = \bigcap_{\alpha \in S} B_{\alpha} \in \Pi,
+        \qquad
+        C \cap D \neq \emptyset,
+      \]
+      取 $x \in C \cap D$。则对每个 $\alpha \in S$, $A_{\alpha}$ 与 $B_{\alpha}$ 都是划分 $\alpha$ 中包含 $x$ 的块, 故
+      \[
+        A_{\alpha} = B_{\alpha}.
+      \]
+      从而 $C = D$。故 $\Pi$ 中各块两两不交, 所以 $\Pi$ 是划分。
+
+      再证它是下确界。对任意 $\alpha \in S$ 与任意 $C = \bigcap_{\gamma \in S} A_{\gamma} \in \Pi$, 有
+      \[
+        C \subseteq A_{\alpha}.
+      \]
+      故
+      \[
+        \Pi \le \alpha.
+      \]
+      所以 $\Pi$ 是下界。
+
+      若 $\gamma \in Pt(X)$ 是任意下界, 即
+      \[
+        \forall \alpha \in S\; \gamma \le \alpha,
+      \]
+      则对任意 $G \in \gamma$ 与任意 $\alpha \in S$, 存在 $A_{\alpha} \in \alpha$ 使得
+      \[
+        G \subseteq A_{\alpha}.
+      \]
+      因而
+      \[
+        G \subseteq \bigcap_{\alpha \in S} A_{\alpha} \in \Pi,
+      \]
+      故
+      \[
+        \gamma \le \Pi.
+      \]
+      这表明 $\Pi$ 是最大下界, 即
+      \[
+        \inf(S) = \Pi.
+      \]
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} 在精化偏序下, ``更小'' 意味着 ``更细''。因此下确界是公共细化, 上确界是公共粗化。\par
+    \textbf{难点.} 上确界不是简单并集, 而是要先把 ``在某个划分里同块'' 这件事做有限链闭包。\par
+    \textbf{易错点.} 很多人会把上确界与下确界的公式写反: 非空交块给出的是下确界, 不是上确界。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确定义生成上确界的关系 $\approx$: \score{2}
+    \item 正确证明 $X/\approx$ 是上界: \score{2}
+    \item 正确证明 $X/\approx$ 是最小上界: \score{2}
+    \item 正确给出下确界的表达式: \score{2}
+    \item 正确说明该表达式确为最大下界: \score{2}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
