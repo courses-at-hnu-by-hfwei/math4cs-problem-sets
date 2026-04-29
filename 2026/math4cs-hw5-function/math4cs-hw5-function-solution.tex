@@ -1,0 +1,391 @@
+% math4cs-hw5-function-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (5-function: 函数)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年4月9日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+% \begin{abstract}
+% \end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[$f$ 与 $f^{-1}$]
+  设 $f: A \to B$ 是函数。请证明:
+  \begin{enumerate}[(1)]
+    \item $f(A_1 \cup A_2) = f(A_1) \cup f(A_2)$
+    \item $f^{-1}(B_1 \setminus B_2) = f^{-1}(B_1) \setminus f^{-1}(B_2)$
+    \item $B_0 \supseteq f(f^{-1}(B_0))$
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    前两问分别直接套用像与逆像的定义; 第三问只需证包含, 因为 $B_0$ 中的元素未必在 $f$ 的值域里。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item 对任意 $b$,
+      \begin{align*}
+        b \in f(A_1 \cup A_2)
+          &\iff \exists a \in A_1 \cup A_2\; b = f(a) \\
+          &\iff \big(\exists a \in A_1\; b = f(a)\big)
+              \lor \big(\exists a \in A_2\; b = f(a)\big) \\
+          &\iff b \in f(A_1) \lor b \in f(A_2) \\
+          &\iff b \in f(A_1) \cup f(A_2).
+      \end{align*}
+      故
+      \[
+        f(A_1 \cup A_2) = f(A_1) \cup f(A_2).
+      \]
+
+    \item 对任意 $a$,
+      \begin{align*}
+        a \in f^{-1}(B_1 \setminus B_2)
+          &\iff f(a) \in B_1 \setminus B_2 \\
+          &\iff f(a) \in B_1 \land f(a) \notin B_2 \\
+          &\iff a \in f^{-1}(B_1) \land a \notin f^{-1}(B_2) \\
+          &\iff a \in f^{-1}(B_1) \setminus f^{-1}(B_2).
+      \end{align*}
+      故
+      \[
+        f^{-1}(B_1 \setminus B_2) = f^{-1}(B_1) \setminus f^{-1}(B_2).
+      \]
+
+    \item 下证
+      \[
+        f(f^{-1}(B_0)) \subseteq B_0.
+      \]
+      任取 $b \in f(f^{-1}(B_0))$, 则存在 $a \in f^{-1}(B_0)$ 使得
+      \[
+        b = f(a).
+      \]
+      由 $a \in f^{-1}(B_0)$,
+      \[
+        f(a) \in B_0.
+      \]
+      故 $b \in B_0$。于是
+      \[
+        f(f^{-1}(B_0)) \subseteq B_0,
+      \]
+      即
+      \[
+        B_0 \supseteq f(f^{-1}(B_0)).
+      \]
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} 两个基本等价式是
+    $y \in f(X) \iff \exists x \in X\; y = f(x)$
+    与
+    $x \in f^{-1}(Y) \iff f(x) \in Y$。\par
+    \textbf{难点.} 像与逆像的行为不同: $f$ 保持并集, 而 $f^{-1}$ 对差集可得到严格等号。\par
+    \textbf{易错点.} 第 (3) 问一般只能得到包含号, 不能直接写成
+    $B_0 = f(f^{-1}(B_0))$; 若 $B_0$ 含有不在 $f(A)$ 中的元素, 等号不成立。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确展开像的定义并证明第 (1) 问: \score{3}
+    \item 正确展开逆像的定义并证明第 (2) 问: \score{3}
+    \item 从 $b \in f(f^{-1}(B_0))$ 正确构造见证 $a$: \score{2}
+    \item 得出 $f(f^{-1}(B_0)) \subseteq B_0$: \score{2}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[$g \circ f$]
+  设 $f: A \to B$ 与 $g: B \to C$ 是函数。
+  请证明,
+  \begin{enumerate}[(1)]
+    \item 如果 $f$ 与 $g$ 是满射, 则 $g \circ f$ 是满射。
+    \item 如果 $g \circ f$ 是单射, 则 $f$ 是单射。
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    第 (1) 问从终点 $c \in C$ 倒着追到 $A$ 中的原像; 第 (2) 问从 $f(a_1) = f(a_2)$ 往前套上 $g$, 再利用复合函数的单射性。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item 对任意 $c \in C$, 由于 $g$ 是满射, 存在 $b \in B$ 使得
+      \[
+        g(b) = c.
+      \]
+      又由于 $f$ 是满射, 存在 $a \in A$ 使得
+      \[
+        f(a) = b.
+      \]
+      因而
+      \[
+        (g \circ f)(a) = g(f(a)) = g(b) = c.
+      \]
+      故
+      \[
+        \forall c \in C\; \exists a \in A\; (g \circ f)(a) = c,
+      \]
+      即 $g \circ f$ 是满射。
+
+    \item 任取 $a_1, a_2 \in A$, 若
+      \[
+        f(a_1) = f(a_2),
+      \]
+      则
+      \[
+        g(f(a_1)) = g(f(a_2)),
+      \]
+      即
+      \[
+        (g \circ f)(a_1) = (g \circ f)(a_2).
+      \]
+      由 $g \circ f$ 是单射, 得
+      \[
+        a_1 = a_2.
+      \]
+      故
+      \[
+        \forall a_1, a_2 \in A\; 
+          \big(f(a_1) = f(a_2) \to a_1 = a_2\big),
+      \]
+      即 $f$ 是单射。
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} 满射证明看目标元素是否有原像; 单射证明看相等式能否推出定义域元素相等。\par
+    \textbf{难点.} 第 (2) 问的结论落在 $f$ 上, 不是落在 $g$ 上。\par
+    \textbf{易错点.} 由 $g \circ f$ 单射, 不能推出 $g$ 单射; 由 $g \circ f$ 满射, 也不能推出 $f$ 满射。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 在第 (1) 问中由 $g$ 满射取到 $b$: \score{2}
+    \item 在第 (1) 问中由 $f$ 满射取到 $a$ 并完成满射证明: \score{3}
+    \item 在第 (2) 问中由 $f(a_1) = f(a_2)$ 推到 $(g \circ f)(a_1) = (g \circ f)(a_2)$: \score{2}
+    \item 用 $g \circ f$ 的单射性推出 $a_1 = a_2$: \score{3}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[反函数]
+  设 $f: A \to B$ 与 $g: B \to A$ 是函数。
+  请证明, \footnote{可以在下周二课程后证明, 当然也可以现在证明。}
+  \[
+    (f \circ g = I_B \land g \circ f = I_A) \to g = f^{-1}.
+  \]
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    两个恒等式分别给出 $f$ 的满射性与单射性, 先证明 $f$ 可逆, 再由 $f(g(b)) = b$ 与反函数定义逐点识别 $g(b)$。
+  \end{intention}
+
+  设
+  \[
+    f \circ g = I_B,
+    \qquad
+    g \circ f = I_A.
+  \]
+
+  先证 $f$ 是单射。任取 $a_1, a_2 \in A$, 若
+  \[
+    f(a_1) = f(a_2),
+  \]
+  则
+  \[
+    g(f(a_1)) = g(f(a_2)).
+  \]
+  由 $g \circ f = I_A$,
+  \[
+    a_1 = (g \circ f)(a_1) = (g \circ f)(a_2) = a_2.
+  \]
+  故 $f$ 是单射。
+
+  再证 $f$ 是满射。任取 $b \in B$, 令
+  \[
+    a = g(b) \in A.
+  \]
+  则
+  \[
+    f(a) = f(g(b)) = (f \circ g)(b) = I_B(b) = b.
+  \]
+  故 $f$ 是满射。
+
+  因而 $f$ 是双射, 故反函数 $f^{-1}: B \to A$ 存在。
+
+  对任意 $b \in B$,
+  \[
+    f(g(b)) = b.
+  \]
+  由反函数的定义,
+  \[
+    f(x) = b \iff x = f^{-1}(b).
+  \]
+  取 $x = g(b)$, 得
+  \[
+    g(b) = f^{-1}(b).
+  \]
+  因而
+  \[
+    \forall b \in B\; g(b) = f^{-1}(b),
+  \]
+  即
+  \[
+    g = f^{-1}.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} $f \circ g = I_B$ 与 $g \circ f = I_A$ 的作用不同: 前者给满射, 后者给单射。\par
+    \textbf{难点.} 证明 $g = f^{-1}$ 之前, 先要说明 $f^{-1}$ 确实存在。\par
+    \textbf{易错点.} 不能只用一个恒等式就直接写出 $g = f^{-1}$; 一般必须同时检查左右逆都成立。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 由 $g \circ f = I_A$ 正确证明 $f$ 是单射: \score{3}
+    \item 由 $f \circ g = I_B$ 正确证明 $f$ 是满射: \score{3}
+    \item 得出 $f$ 为双射并说明 $f^{-1}$ 存在: \score{1}
+    \item 对任意 $b \in B$ 证明 $g(b) = f^{-1}(b)$ 并得出 $g = f^{-1}$: \score{3}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[函数与等价关系]
+  设 $f: X \to Y$ 是满射。
+  定义 $X$ 上的二元关系 $R$ 为 $(x, y) \in R$ 当且仅当 $f(x) = f(y)$。
+  请证明,
+  \begin{enumerate}[(1)]
+    \item $R$ 是 $X$ 上的等价关系。
+    \item 定义 $h \subseteq (X/R) \times Y$ 为 $h([x]_{R}) = f(x)$。
+      请证明, $h$ 是从商集 $X/R$ 到 $Y$ 的函数, 且是满射。
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    第 (1) 问把等价关系三性质全部化成等式的基本性质; 第 (2) 问先证 $h([x]_R)=f(x)$ 与代表元选择无关, 再用 $f$ 的满射性推出 $h$ 的满射性。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item 下证 $R$ 是 $X$ 上的等价关系。
+
+      \begin{enumerate}[(i)]
+        \item \textbf{自反性.} 对任意 $x \in X$,
+          \[
+            f(x) = f(x).
+          \]
+          故 $(x, x) \in R$, 即 $x R x$。
+
+        \item \textbf{对称性.} 对任意 $x, y \in X$, 若 $x R y$, 则
+          \[
+            f(x) = f(y).
+          \]
+          由等式的对称性,
+          \[
+            f(y) = f(x),
+          \]
+          故 $y R x$。
+
+        \item \textbf{传递性.} 对任意 $x, y, z \in X$, 若 $x R y$ 且 $y R z$, 则
+          \[
+            f(x) = f(y),
+            \qquad
+            f(y) = f(z).
+          \]
+          由等式的传递性,
+          \[
+            f(x) = f(z),
+          \]
+          故 $x R z$。
+      \end{enumerate}
+
+      因而 $R$ 具有自反性、对称性与传递性, 故 $R$ 是 $X$ 上的等价关系。
+
+    \item 下证 $h: X/R \to Y$ 是函数, 且是满射。
+
+      先证 $h$ 良定义。若
+      \[
+        [x]_R = [x']_R,
+      \]
+      则 $x' \in [x']_R = [x]_R$, 从而 $x R x'$。于是
+      \[
+        f(x) = f(x').
+      \]
+      故
+      \[
+        h([x]_R) = f(x) = f(x') = h([x']_R).
+      \]
+      这说明 $h([x]_R)$ 与代表元的选择无关。
+
+      又对任意 $[x]_R \in X/R$, 有 $x \in X$, 故
+      \[
+        h([x]_R) = f(x) \in Y.
+      \]
+      因而 $h$ 是从 $X/R$ 到 $Y$ 的函数。
+
+      再证 $h$ 是满射。任取 $y \in Y$, 由于 $f$ 是满射, 存在 $x \in X$ 使得
+      \[
+        f(x) = y.
+      \]
+      于是
+      \[
+        h([x]_R) = f(x) = y.
+      \]
+      故
+      \[
+        \forall y \in Y\; \exists [x]_R \in X/R\; h([x]_R) = y,
+      \]
+      即 $h$ 是满射。
+  \end{enumerate}
+
+  \begin{remark}
+    \textbf{重点.} 关系 $x R y \iff f(x) = f(y)$ 的本质是 ``被 $f$ 映到同一个值''。\par
+    \textbf{难点.} 第 (2) 问首先不是证满射, 而是证 $h([x]_R)=f(x)$ 不依赖代表元, 即良定义。\par
+    \textbf{易错点.} 不能由 $[x]_R = [x']_R$ 直接跳到 $x = x'$; 正确结论只是 $x R x'$, 进而 $f(x) = f(x')$。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确证明 $R$ 的自反性: \score{1}
+    \item 正确证明 $R$ 的对称性: \score{1}
+    \item 正确证明 $R$ 的传递性: \score{2}
+    \item 正确证明 $h$ 良定义, 从而是从 $X/R$ 到 $Y$ 的函数: \score{3}
+    \item 利用 $f$ 的满射性证明 $h$ 是满射: \score{3}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
