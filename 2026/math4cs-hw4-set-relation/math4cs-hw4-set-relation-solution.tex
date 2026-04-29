@@ -1,0 +1,674 @@
+% math4cs-hw4-set-relation-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (3-set: 集合的概念与运算; 4-relation: 关系)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年04月04日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+  % \mfigcap{width = 0.85\textwidth}{figs/George-Boole}{George Boole}
+  % \begin{center}{\fcolorbox{blue}{yellow!60}{\parbox{0.65\textwidth}{\large
+  %   \begin{itemize}
+  %     \item
+  %   \end{itemize}}}}
+  % \end{center}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[相对补与绝对补]
+  请证明,
+  \[
+    A \cap (B \setminus C) = (A \cap B) \setminus (A \cap C).
+  \]
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    对任意元素作等价变形, 把相对补拆成 ``属于且不属于'', 再利用 $x \in A$ 将右侧差集中的 $A$ 吸收进去。
+  \end{intention}
+
+  对任意 $x$,
+  \begin{align*}
+    x \in A \cap (B \setminus C)
+      &\iff x \in A \land x \in B \setminus C \\
+      &\iff x \in A \land x \in B \land x \notin C \\
+      &\iff x \in A \land x \in B \land \lnot (x \in A \land x \in C) \\
+      &\iff x \in A \cap B \land x \notin A \cap C \\
+      &\iff x \in (A \cap B) \setminus (A \cap C).
+  \end{align*}
+  故
+  \[
+    A \cap (B \setminus C) = (A \cap B) \setminus (A \cap C).
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 用元素法时, 先把 $B \setminus C$ 展开成 $x \in B \land x \notin C$。\par
+    \textbf{难点.} 从 $x \notin C$ 变到 $x \notin A \cap C$ 时, 依赖于前面已经知道 $x \in A$。\par
+    \textbf{易错点.} 不能把 $(A \cap B) \setminus (A \cap C)$ 误写成 $(A \cap B) \setminus C$ 之后就停止; 本题要证明两者进一步相等。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确采用元素法并固定任意 $x$: \score{2}
+    \item 正确展开 $x \in A \cap (B \setminus C)$: \score{3}
+    \item 正确化成 $x \in A \cap B \land x \notin A \cap C$: \score{3}
+    \item 得出集合相等结论: \score{2}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[对称差]
+  请证明,
+  \[
+    A \cap (B \oplus C) = (A \cap B) \oplus (A \cap C).
+  \]
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    先把对称差改写成两个相对补的并, 再分别套用上题结论。
+  \end{intention}
+
+  \begin{align*}
+    A \cap (B \oplus C)
+      &= A \cap \big((B \setminus C) \cup (C \setminus B)\big) \\
+      &= \big(A \cap (B \setminus C)\big) \cup \big(A \cap (C \setminus B)\big) \\
+      &= \big((A \cap B) \setminus (A \cap C)\big)
+          \cup \big((A \cap C) \setminus (A \cap B)\big) \\
+      &= (A \cap B) \oplus (A \cap C).
+  \end{align*}
+
+  \begin{remark}
+    \textbf{重点.} 对称差的定义是
+    $B \oplus C = (B \setminus C) \cup (C \setminus B)$。\par
+    \textbf{难点.} 第二步要同时使用交对并的分配律和上题的相对补公式。\par
+    \textbf{易错点.} 不能把 $B \oplus C$ 误当成 $(B \cup C) \setminus C$ 或普通并集。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确展开对称差: \score{2}
+    \item 正确应用分配律: \score{2}
+    \item 正确将两项分别化为差集形式: \score{4}
+    \item 写回对称差并得出结论: \score{2}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[广义并、广义交、德摩根律]
+  请化简集合 $A$:
+  \[
+    A = \mathbb{R} \setminus \bigcap_{n \in \mathbb{Z}^{+}} (\mathbb{R} \setminus \set{-n, -n+1, \cdots, 0, \cdots, n-1, n})
+  \]
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    先把括号中的有限集合记成 $X_n$, 再直接应用广义交版本的德摩根律, 最后识别出广义并恰好就是全体整数。
+  \end{intention}
+
+  令
+  \[
+    X_n = \set{-n, -n+1, \cdots, 0, \cdots, n-1, n}
+    \qquad (n \in \mathbb{Z}^{+}).
+  \]
+  则
+  \begin{align*}
+    A
+      &= \mathbb{R} \setminus \bigcap_{n \in \mathbb{Z}^{+}} (\mathbb{R} \setminus X_n) \\
+      &= \bigcup_{n \in \mathbb{Z}^{+}} \Big(\mathbb{R} \setminus (\mathbb{R} \setminus X_n)\Big) \\
+      &= \bigcup_{n \in \mathbb{Z}^{+}} X_n.
+  \end{align*}
+
+  下面证明
+  \[
+    \bigcup_{n \in \mathbb{Z}^{+}} X_n = \mathbb{Z}.
+  \]
+
+  \begin{enumerate}[(1)]
+    \item 对任意 $n \in \mathbb{Z}^{+}$, 都有 $X_n \subseteq \mathbb{Z}$,
+      故
+      \[
+        \bigcup_{n \in \mathbb{Z}^{+}} X_n \subseteq \mathbb{Z}.
+      \]
+
+    \item 对任意 $k \in \mathbb{Z}$, 取 $n = |k| + 1$, 则 $n \in \mathbb{Z}^{+}$ 且
+      \[
+        -n \le k \le n,
+      \]
+      从而 $k \in X_n$。故
+      \[
+        \mathbb{Z} \subseteq \bigcup_{n \in \mathbb{Z}^{+}} X_n.
+      \]
+  \end{enumerate}
+
+  因而
+  \[
+    A = \bigcup_{n \in \mathbb{Z}^{+}} X_n = \mathbb{Z}.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 先把式子看成 $\mathbb{R} \setminus \bigcap_{n} (\mathbb{R} \setminus X_n)$, 再套德摩根律。\par
+    \textbf{难点.} 最后一步不是停在 $\bigcup_n X_n$, 而是要进一步识别它等于 $\mathbb{Z}$。\par
+    \textbf{易错点.} $n \in \mathbb{Z}^{+}$, 所以为覆盖 $0$, 取见证时不要写 $n = |k|$ 后忘记 $k = 0$ 的情形; 取 $n = |k| + 1$ 最稳妥。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确定义 $X_n$: \score{1}
+    \item 正确应用德摩根律化为广义并: \score{4}
+    \item 证明 $\bigcup_n X_n \subseteq \mathbb{Z}$: \score{2}
+    \item 证明 $\mathbb{Z} \subseteq \bigcup_n X_n$: \score{2}
+    \item 写出最终答案 $A = \mathbb{Z}$: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[幂集]
+  请证明,~\footnote{不, 我有``幂集''恐惧症。}
+  \[
+    \ps{A} = \ps{B} \iff A = B.
+  \]
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    充分性直接用定义; 必要性抓住关键观察 $S \in \ps{X} \iff S \subseteq X$, 然后把 $A$ 与 $B$ 自己送进对方的幂集。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item[$(\Rightarrow)$] 设 $\ps{A} = \ps{B}$。
+
+      由于 $A \subseteq A$, 故
+      \[
+        A \in \ps{A} = \ps{B},
+      \]
+      从而
+      \[
+        A \subseteq B.
+      \]
+
+      同理, 由于 $B \subseteq B$, 故
+      \[
+        B \in \ps{B} = \ps{A},
+      \]
+      从而
+      \[
+        B \subseteq A.
+      \]
+
+      因而
+      \[
+        A = B.
+      \]
+
+    \item[$(\Leftarrow)$] 设 $A = B$。对任意集合 $X$,
+      \[
+        X \in \ps{A}
+          \iff X \subseteq A
+          \iff X \subseteq B
+          \iff X \in \ps{B}.
+      \]
+      故
+      \[
+        \ps{A} = \ps{B}.
+      \]
+  \end{enumerate}
+
+  综上,
+  \[
+    \ps{A} = \ps{B} \iff A = B.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 核心等价式是 $S \in \ps{X} \iff S \subseteq X$。\par
+    \textbf{难点.} 必要性证明里最有效的对象不是任意元素 $a \in A$, 而是集合 $A$ 本身。\par
+    \textbf{易错点.} 不能只说 ``幂集大小相同, 所以原集合相同''; 这里需要的是集合相等, 不是仅仅基数相同。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 由 $A \subseteq A$ 推出 $A \subseteq B$: \score{3}
+    \item 由 $B \subseteq B$ 推出 $B \subseteq A$: \score{3}
+    \item 得出 $A = B$: \score{1}
+    \item 证明 $A = B \Rightarrow \ps{A} = \ps{B}$: \score{3}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[关系的运算]
+  请证明,
+  \[
+    R[X_1 \setminus X_2] \supseteq R[X_1] \setminus R[X_2].
+  \]
+  请举例说明 $\supseteq$ 不能替换成 $=$。
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    直接按像的定义拆开; 右侧差集给出一个来自 $X_1$ 的见证, 同时排除了任何来自 $X_2$ 的见证, 于是该见证必在 $X_1 \setminus X_2$ 中。
+  \end{intention}
+
+  对任意 $b$,
+  \begin{align*}
+    b \in R[X_1] \setminus R[X_2]
+      &\iff b \in R[X_1] \land b \notin R[X_2] \\
+      &\iff \big(\exists a \in X_1.\; (a, b) \in R\big)
+          \land \neg \big(\exists a \in X_2.\; (a, b) \in R\big).
+  \end{align*}
+
+  由第一部分, 取 $a_0 \in X_1$ 使得 $(a_0, b) \in R$。
+  由第二部分, 不存在 $a \in X_2$ 满足 $(a, b) \in R$;
+  特别地, $a_0 \notin X_2$。
+  故
+  \[
+    a_0 \in X_1 \setminus X_2,
+    \qquad
+    (a_0, b) \in R,
+  \]
+  从而
+  \[
+    b \in R[X_1 \setminus X_2].
+  \]
+
+  因而
+  \[
+    R[X_1] \setminus R[X_2] \subseteq R[X_1 \setminus X_2],
+  \]
+  即
+  \[
+    R[X_1 \setminus X_2] \supseteq R[X_1] \setminus R[X_2].
+  \]
+
+  下面给出严格包含的反例。取
+  \[
+    R = \set{(1, 3), (2, 3)},
+    \qquad
+    X_1 = \set{1, 2},
+    \qquad
+    X_2 = \set{2}.
+  \]
+  则
+  \[
+    X_1 \setminus X_2 = \set{1},
+    \qquad
+    R[X_1 \setminus X_2] = R[\set{1}] = \set{3}.
+  \]
+  另一方面,
+  \[
+    R[X_1] = \set{3},
+    \qquad
+    R[X_2] = \set{3},
+    \qquad
+    R[X_1] \setminus R[X_2] = \emptyset.
+  \]
+  故
+  \[
+    R[X_1 \setminus X_2] = \set{3} \supsetneq \emptyset = R[X_1] \setminus R[X_2].
+  \]
+  所以 $\supseteq$ 不能替换成 $=$。
+
+  \begin{remark}
+    \textbf{重点.} 右侧的差集条件 ``$b \notin R[X_2]$'' 排除的是所有来自 $X_2$ 的前像。\par
+    \textbf{难点.} 反例里要制造同一个像元素同时来自 $X_1 \setminus X_2$ 与 $X_2$。\par
+    \textbf{易错点.} 不能从 $b \in R[X_1]$ 直接推出其所有原像都在 $X_1$ 中; 这里只需要一个见证即可。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确按像的定义展开右侧差集: \score{3}
+    \item 正确构造见证并证明其在 $X_1 \setminus X_2$ 中: \score{3}
+    \item 得出包含关系: \score{1}
+    \item 给出严格反例并正确计算两边: \score{3}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[关系的运算]
+  请证明,
+  \[
+    (X \cap Y) \circ Z \subseteq (X \circ Z) \cap (Y \circ Z).
+  \]
+  请举例说明, $\subseteq$ 不能换成 $=$。
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    直接按复合的定义拆开; 左侧给出的同一个中间见证同时适用于 $X \circ Z$ 和 $Y \circ Z$。反例则故意让右侧的两个见证不同。
+  \end{intention}
+
+  对任意 $(a, c)$,
+  \begin{align*}
+    (a, c) \in (X \cap Y) \circ Z
+      &\iff \exists b.\; (a, b) \in Z \land (b, c) \in X \cap Y \\
+      &\iff \exists b.\; \big((a, b) \in Z \land (b, c) \in X \land (b, c) \in Y\big) \\
+      &\implies \exists b.\; \big((a, b) \in Z \land (b, c) \in X\big)
+          \land \exists b.\; \big((a, b) \in Z \land (b, c) \in Y\big) \\
+      &\iff (a, c) \in X \circ Z \land (a, c) \in Y \circ Z \\
+      &\iff (a, c) \in (X \circ Z) \cap (Y \circ Z).
+  \end{align*}
+  故
+  \[
+    (X \cap Y) \circ Z \subseteq (X \circ Z) \cap (Y \circ Z).
+  \]
+
+  下面给出严格包含的反例。取
+  \[
+    Z = \set{(1, 2), (1, 3)},
+    \qquad
+    X = \set{(2, 4)},
+    \qquad
+    Y = \set{(3, 4)}.
+  \]
+  则
+  \[
+    X \cap Y = \emptyset,
+    \qquad
+    (X \cap Y) \circ Z = \emptyset.
+  \]
+  另一方面,
+  \[
+    X \circ Z = \set{(1, 4)},
+    \qquad
+    Y \circ Z = \set{(1, 4)},
+  \]
+  从而
+  \[
+    (X \circ Z) \cap (Y \circ Z) = \set{(1, 4)}.
+  \]
+  因此
+  \[
+    (X \cap Y) \circ Z = \emptyset \subsetneq \set{(1, 4)} = (X \circ Z) \cap (Y \circ Z).
+  \]
+  所以 $\subseteq$ 不能换成 $=$。
+
+  \begin{remark}
+    \textbf{重点.} 左侧的一个见证 $b$ 同时见证了两件事: 属于 $X \circ Z$ 与属于 $Y \circ Z$。\par
+    \textbf{难点.} 右侧交集中的两个存在量词可以对应不同的见证, 这正是逆包含失败的根源。\par
+    \textbf{易错点.} 复合 $R \circ S$ 的含义是 ``先做 $S$, 再做 $R$'', 不要把顺序写反。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确按复合定义展开左侧: \score{3}
+    \item 正确推出属于 $X \circ Z$ 与 $Y \circ Z$: \score{3}
+    \item 得出包含关系: \score{1}
+    \item 给出严格反例并正确计算两边: \score{3}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[关系的性质]
+  请证明,
+  \[
+    R \text{ 是对称且传递的 } \iff R = R^{-1} \circ R
+  \]
+\end{problem}
+
+\begin{proof}
+  \begin{intention}
+    先把 $R^{-1} \circ R$ 读成 ``有公共 $R$-后继'', 再分别证明两个方向。证明逆向时, 先由等式推出对称性, 再借此推出传递性。
+  \end{intention}
+
+  \begin{enumerate}[(1)]
+    \item[$(\Rightarrow)$] 设 $R$ 是对称且传递的。
+
+      先证 $R \subseteq R^{-1} \circ R$。
+      任取 $(a, b) \in R$。
+      由对称性,
+      \[
+        (b, a) \in R.
+      \]
+      再由传递性,
+      \[
+        (a, a) \in R.
+      \]
+      取见证 $a$, 则
+      \[
+        (a, a) \in R,
+        \qquad
+        (a, b) \in R^{-1}
+        \quad (\text{因为 } (b, a) \in R),
+      \]
+      从而
+      \[
+        (a, b) \in R^{-1} \circ R.
+      \]
+      故
+      \[
+        R \subseteq R^{-1} \circ R.
+      \]
+
+      再证 $R^{-1} \circ R \subseteq R$。
+      任取 $(a, b) \in R^{-1} \circ R$。
+      则存在 $c$ 使得
+      \[
+        (a, c) \in R,
+        \qquad
+        (c, b) \in R^{-1}.
+      \]
+      于是 $(b, c) \in R$。由对称性得 $(c, b) \in R$, 再由传递性得
+      \[
+        (a, b) \in R.
+      \]
+      故
+      \[
+        R^{-1} \circ R \subseteq R.
+      \]
+
+      因而
+      \[
+        R = R^{-1} \circ R.
+      \]
+
+    \item[$(\Leftarrow)$] 设 $R = R^{-1} \circ R$。
+
+      先证 $R$ 对称。
+      任取 $(a, b) \in R$。由等式,
+      \[
+        (a, b) \in R^{-1} \circ R.
+      \]
+      故存在 $c$ 使得
+      \[
+        (a, c) \in R,
+        \qquad
+        (c, b) \in R^{-1},
+      \]
+      即
+      \[
+        (a, c) \in R,
+        \qquad
+        (b, c) \in R.
+      \]
+      于是同一见证 $c$ 也说明
+      \[
+        (b, a) \in R^{-1} \circ R = R.
+      \]
+      所以 $R$ 对称。
+
+      再证 $R$ 传递。
+      任取 $(a, b), (b, c) \in R$。
+      由刚证得的对称性,
+      \[
+        (c, b) \in R.
+      \]
+      因而以 $b$ 为见证,
+      \[
+        (a, b) \in R,
+        \qquad
+        (c, b) \in R,
+      \]
+      从而
+      \[
+        (a, c) \in R^{-1} \circ R = R.
+      \]
+      所以 $R$ 传递。
+  \end{enumerate}
+
+  综上,
+  \[
+    R \text{ 是对称且传递的 } \iff R = R^{-1} \circ R.
+  \]
+
+  \begin{remark}
+    \textbf{重点.} 按本课定义,
+    \[(a, b) \in R^{-1} \circ R \iff \exists c.\; (a, c) \in R \land (b, c) \in R.\]
+    也就是 $a, b$ 有公共 $R$-后继。\par
+    \textbf{难点.} 证明 $R \subseteq R^{-1} \circ R$ 时, 需要先由对称性与传递性推出 $(a, a) \in R$。\par
+    \textbf{易错点.} 不能把 $R \circ R^{-1}$ 和 $R^{-1} \circ R$ 混淆; 这里的复合顺序非常关键。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 在 $R$ 对称且传递时证明 $R \subseteq R^{-1} \circ R$: \score{3}
+    \item 在 $R$ 对称且传递时证明 $R^{-1} \circ R \subseteq R$: \score{2}
+    \item 由 $R = R^{-1} \circ R$ 证明对称性: \score{2}
+    \item 由 $R = R^{-1} \circ R$ 证明传递性: \score{2}
+    \item 完成双向结论整理: \score{1}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}[等价关系]
+  一个自反且传递的二元关系 $R \subseteq X \times X$
+  称为 $X$ 上的拟序。
+  现令 $\preceq\; \subseteq X \times X$ 为拟序。
+  如下定义 $X$ 上的关系 $\sim$:
+  \[
+    x \sim y \iff x \preceq y \land y \preceq x,
+  \]
+  请证明, $\sim$ 是 $X$ 上的等价关系。
+\end{problem}
+
+\begin{solution}
+  \begin{intention}
+    直接逐项验证等价关系的三条性质; 所有结论都只来自 $\preceq$ 的自反性与传递性。
+  \end{intention}
+
+  证明 $\sim$ 是 $X$ 上的等价关系。
+
+  \begin{enumerate}[(1)]
+    \item \textbf{自反性.}
+
+      对任意 $x \in X$, 由于 $\preceq$ 是拟序, 故 $\preceq$ 自反, 从而
+      \[
+        x \preceq x.
+      \]
+      因此
+      \[
+        x \preceq x \land x \preceq x,
+      \]
+      即
+      \[
+        x \sim x.
+      \]
+
+    \item \textbf{对称性.}
+
+      对任意 $x, y \in X$, 若 $x \sim y$, 则
+      \[
+        x \preceq y \land y \preceq x.
+      \]
+      交换两个合取项可得
+      \[
+        y \preceq x \land x \preceq y,
+      \]
+      即
+      \[
+        y \sim x.
+      \]
+
+    \item \textbf{传递性.}
+
+      对任意 $x, y, z \in X$, 若 $x \sim y$ 且 $y \sim z$, 则
+      \[
+        x \preceq y \land y \preceq x,
+        \qquad
+        y \preceq z \land z \preceq y.
+      \]
+      由 $\preceq$ 的传递性,
+      \[
+        x \preceq y \land y \preceq z \implies x \preceq z,
+      \]
+      且
+      \[
+        z \preceq y \land y \preceq x \implies z \preceq x.
+      \]
+      因而
+      \[
+        x \preceq z \land z \preceq x,
+      \]
+      即
+      \[
+        x \sim z.
+      \]
+  \end{enumerate}
+
+  综上, $\sim$ 具有自反性、对称性与传递性, 故 $\sim$ 是 $X$ 上的等价关系。
+
+  \begin{remark}
+    \textbf{重点.} 对称性来自定义本身, 传递性才真正用到拟序的传递性。\par
+    \textbf{难点.} 传递性要同时推出 $x \preceq z$ 与 $z \preceq x$。\par
+    \textbf{易错点.} 拟序不要求反对称, 所以一般不能从 $x \sim y$ 推出 $x = y$。
+  \end{remark}
+
+  \textbf{分值分配（10分）.}
+  \begin{enumerate}[(1)]
+    \item 正确证明自反性: \score{3}
+    \item 正确证明对称性: \score{2}
+    \item 正确用拟序的传递性推出 $x \preceq z$: \score{2}
+    \item 正确用拟序的传递性推出 $z \preceq x$: \score{2}
+    \item 得出等价关系结论: \score{1}
+  \end{enumerate}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
