@@ -1,0 +1,131 @@
+% math4cs-hw7-paths-cycles.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (8-paths-cycles: 路径与圈)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年5月15日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $G = (V, E)$ 是无向图 (不一定是简单无向图),
+  其中 $|E| = m$。
+  请证明\footnote{这也说明了, $G$ 中度数为奇数的顶点数目为偶数。},
+  \[
+    \sum_{v \in V} \deg(v) = 2m.
+  \]
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  \begin{enumerate}[(1)]
+    \item 请证明: 每个 $u\-v$ 闭道路 (closed walk) 都包含一个 $u\-v$ 路径 (path)。
+    \item 请证明: 每个长度为奇数的闭道路 (closed walk) 都包含一个长度为奇数的圈 (cycle)~\footnote{
+    ``长度''就是所含边的条数。}。
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent (提示: 可用数学归纳法。如果你使用数学归纳法, 请注意数学归纳法的书写规范。)
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $G$ 是一个简单无向图 (undirected simple graph) 且满足
+  \[
+    \delta(G) \ge k,
+  \]
+  其中 $k \in \mathbb{N}^{+}$ 为常数。
+  请证明:
+  \begin{enumerate}[(1)]
+    \item $G$ 包含长度 $\ge k$ 的路径;
+    \item 如果 $k \ge 2$, 则 $G$ 包含长度 $\ge k + 1$ 的圈。
+  \end{enumerate}
+  提示: By Extermality。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  考虑下图, 记为 $G$。
+  \fig{width = 0.40\textwidth}{figs/Euler-graph}
+  \begin{enumerate}[(1)]
+    \item $G$ 是否是欧拉图? 请说明理由。
+    \item 如果是欧拉图, 请将其分解为若干圈的组合, 并给出一个欧拉回路。
+    　(可以自行为顶点编号, 也可以使用图上边的编号描述回路。)
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  请判断下图 $G$ 是否是 Hamilton 图 (Hamiltonian graph), 并说明理由。
+  \fig{width = 0.30\textwidth}{figs/Hamiltonian}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  在圆周上取 $n$ 个点。
+  将每个点与圆周上两个方向上各自距离它最近的两个点相连,
+  得到一个 $4$-正则图 $G_n$。
+
+  \noindent 请证明: 当 $n \ge 5$ 时, $G_n$ 可以表示为两个 Hamilton 圈的并。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
