@@ -1,0 +1,125 @@
+% math4cs-hw8-trees.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (9-trees: 树)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年5月22日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[树的顶点度数]
+  已知一棵树 $T$ 有 1 个 2 度顶点,
+  2 个 3 度顶点, 1 个 4 度顶点, 1 个 5 度顶点,
+  其余顶点均为叶节点。
+
+  \noindent 请计算 $T$ 的顶点数。~\footnote{
+    提示：上次作业第一题。
+  }
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[树的刻画]
+  给定无向图 $G$。
+  请证明: $G$ 是树当且仅当 $G$ 没有 loop 且 $G$ 有唯一的生成树。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[生成树与桥]
+  给定无向连通图 $G$ 与 $G$ 中的某条边 $e$。
+  请证明: $e$ 是桥 (bridge~\footnote{bridge 也称为 cut-edge (割边)。})
+    当且仅当 $e$ 属于 $G$ 的每个生成树。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[最小生成树算法]
+  请分别使用 Kruskal 算法与 Prim 算法 (从顶点1开始)
+  给出下图的最小生成树。
+  要求给出边添加的顺序。
+
+  \fig{width = 0.50\textwidth}{figs/st-example}
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[唯一最小生成树]
+  设 $G$ 是无向连通带权图, $T$ 是 $G$ 的一个最小生成树。
+
+  \noindent 请证明: $T$ 是 $G$ 的唯一最小生成树当且仅当
+  对于不在 $T$ 中的每一条边 $e$,
+  $e$ 的权重大于 $T + e$ 所产生的圈中其它每条边的权重。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[树的中心点]
+  如果 $G$ 是一个连通图，则 $G$ 的一个中心点
+  是具有如下性质的顶点 $v$：从 $v$ 到其他所有顶点的距离的最大值尽可能小。
+
+  \noindent 请设计算法, 给定一棵树 $T$, 找出 $T$ 的中心点
+  (注意：可能不唯一)，并说明其正确性。
+\end{problem}
+
+\begin{proof}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+\beginoptional
+%%%%%%%%%%%%%%%
+\begin{problem}[谍影重重]
+  \fig{width = 0.70\textwidth}{figs/Bourne}
+\end{problem}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
