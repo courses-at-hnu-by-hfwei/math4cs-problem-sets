@@ -1,0 +1,215 @@
+% math4cs-hw8-trees-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (9-trees: 树)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年5月22日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[树的顶点度数]
+  已知一棵树 $T$ 有 1 个 2 度顶点,
+  2 个 3 度顶点, 1 个 4 度顶点, 1 个 5 度顶点,
+  其余顶点均为叶节点。
+
+  \noindent 请计算 $T$ 的顶点数。~\footnote{
+    提示：上次作业第一题。
+  }
+\end{problem}
+
+\begin{proof}
+  设叶节点数为 $n_1$, 则
+  \[
+    |V(T)| = 1 + 2 + 1 + 1 + n_1 = 5 + n_1.
+  \]
+  由握手定理,
+  \[
+    1 \cdot 2 + 2 \cdot 3 + 1 \cdot 4 + 1 \cdot 5 + n_1 \cdot 1 = 2(|V(T)| - 1).
+  \]
+  即
+  \[
+    17 + n_1 = 2(5 + n_1) - 2 = 2n_1 + 8.
+  \]
+  解得 $n_1 = 9$, 故
+  \[
+    |V(T)| = 5 + 9 = 14.
+  \]
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[树的刻画]
+  给定无向图 $G$。
+  请证明: $G$ 是树当且仅当 $G$ 没有 loop 且 $G$ 有唯一的生成树。
+\end{problem}
+
+\begin{proof}
+  分两个方向证明。
+  \begin{itemize}
+    \item $\implies:$ 假设 $G$ 是树。显然, $G$ 没有 loop。
+      反设 $G$ 有两个不同的生成树 $T_{1}$, $T_{2}$。
+      $T_{2}$ 中至少存在一条不在 $T_{1}$ 中的边, 记为 $e$。
+      因此, $G$ 包含 $T_{1}$ 与 $e$。故 $G$ 包含圈。
+      与 $G$ 是树矛盾。
+    \item $\Longleftarrow:$ 假设 $G$ 没有 loop 且有唯一的生成树。
+      下证
+      \begin{itemize}
+        \item $G$ 是连通的。因为 $G$ 有生成树, 故 $G$ 是连通的。
+        \item $G$ 是无圈的。反设 $G$ 中有圈, 记为 $C$。
+          设 $T$ 是 $G$ 的唯一的生成树。
+          $C$ 中必存在一条不在 $T$ 中的边, 记为 $e$。
+          将 $e$ 加入 $T$ 中, 必形成圈, 记为 $C'$。
+          从 $C'$ 中删掉一条边 $e' \neq e$,
+          得到 $G$ 的一个生成树 $T' = T + e - e'$。
+          $T' \neq T$, 与 $T$ 的唯一性矛盾。
+      \end{itemize}
+  \end{itemize}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[生成树与桥]
+  给定无向连通图 $G$ 与 $G$ 中的某条边 $e$。
+  请证明: $e$ 是桥 (bridge~\footnote{bridge 也称为 cut-edge (割边)。})
+    当且仅当 $e$ 属于 $G$ 的每个生成树。
+\end{problem}
+
+\begin{proof}
+  分两个方向证明。
+  \begin{itemize}
+    \item $\implies:$ 假设 $e$ 是桥。
+      反设 $e$ 不属于 $G$ 的某个生成树 $T$。
+      将 $e$ 加入 $T$ 中, 则形成一个包含 $e$ 的圈。
+      所以, $e$ 不是桥。矛盾。
+    \item $\Longleftarrow:$ 假设 $e$ 属于 $G$ 的每个生成树。
+      反设 $e$ 不是桥, 则 $e$ 在某个圈中。
+      因此, 存在某个生成树不包含 $e$
+      (否则, 使用类似 Cycle Property 的证明, 可以构造出不包含 $e$ 的生成树)。
+      矛盾。
+  \end{itemize}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[最小生成树算法]
+  请分别使用 Kruskal 算法与 Prim 算法 (从顶点1开始)
+  给出下图的最小生成树。
+  要求给出边添加的顺序。
+
+  \fig{width = 0.50\textwidth}{figs/st-example}
+\end{problem}
+
+\begin{proof}
+  \begin{itemize}
+    \item Kruskal 算法: 加边顺序为
+      \[
+        \set{1, 4}, \set{1, 2}, \set{2, 3}, \set{1, 5}, \set{2, 6}.
+      \]
+    \item Prim 算法: 加边顺序为
+      \[
+        \set{1, 4}, \set{1, 2}, \set{2, 3}, \set{1, 5}, \set{2, 6}.
+      \]
+  \end{itemize}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[唯一最小生成树]
+  设 $G$ 是无向连通带权图, $T$ 是 $G$ 的一个最小生成树。
+
+  \noindent 请证明: $T$ 是 $G$ 的唯一最小生成树当且仅当
+  对于不在 $T$ 中的每一条边 $e$,
+  $e$ 的权重大于 $T + e$ 所产生的圈中其它每条边的权重。
+\end{problem}
+
+\begin{proof}
+  分两个方向证明。
+  \begin{itemize}
+    \item $\implies:$ 假设 $T$ 是 $G$ 的唯一最小生成树。
+      反设存在一条不在 $T$ 中的边 $e$,
+      $w(e)$ 不大于 $T + e$ 所产生的圈中其它某条边 $e'$ 的权重。
+      则 $T' = T + e - e'$ 是一个权重不大于 $w(T)$ 的生成树。
+      与 $T$ 的唯一性矛盾。
+    \item $\Longleftarrow:$ 反设 $G$ 还有一棵最小生成树 $T' \neq T$。
+      $T'$ 中至少存在一条不在 $T$ 中的边, 记为 $e$。
+      将 $e$ 加入 $T$ 中, 形成一个圈 $C$。
+      根据前提条件, $e$ 是 $C$ 中权重最大的唯一一条边。
+      根据 Cycle Property, $e$ 不在任何最小生成树中。
+      这与 $e \in T'$ 矛盾。
+  \end{itemize}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}[树的中心点]
+  如果 $G$ 是一个连通图，则 $G$ 的一个中心点
+  是具有如下性质的顶点 $v$：从 $v$ 到其他所有顶点的距离的最大值尽可能小。
+
+  \noindent 请设计算法, 给定一棵树 $T$, 找出 $T$ 的中心点
+  (注意：可能不唯一)，并说明其正确性。
+\end{problem}
+
+\begin{proof}
+  \textbf{算法 (反复删叶).}
+  \begin{enumerate}[(1)]
+    \item 输入一棵树 $T$。
+    \item 反复删除当前图中所有叶节点, 直到剩下的顶点数 $\le 2$。
+    \item 输出最后剩下的顶点集合; 其中每个顶点都是 $T$ 的中心点。
+  \end{enumerate}
+
+  \textbf{正确性.}
+  记 $T$ 的直径为某条最长路径 $P = u \leadsto v$。
+  在树中, 任意顶点 $x$ 到这条直径两端点的距离满足
+  \[
+    d(x, u) + d(x, v) = d(u, v).
+  \]
+  因而
+  \[
+    \max_{w \in V(T)} d(x, w) = \max\{d(x, u), d(x, v)\}.
+  \]
+  中心点使该最大值最小, 等价于使 $x$ 到直径两端点的距离尽可能接近。
+
+  删叶操作不会删除直径的中点 (或相邻中点):
+  每次删除的叶节点不可能是当前直径的中点, 因为中点到直径端点的距离严格大于叶节点到其唯一邻居的距离。
+  因此, 当删叶过程结束时, 剩下的 $1$ 个或 $2$ 个顶点恰为原树的中心点。
+
+  \textbf{复杂度.}
+  每个顶点最多被删除一次, 故总时间为 $O(n)$, 其中 $n = |V(T)|$。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}

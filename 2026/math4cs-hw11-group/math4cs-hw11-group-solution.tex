@@ -1,0 +1,247 @@
+% math4cs-hw11-group-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (12-groups: 群论)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年6月11日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  在整数集 $\mathbb{Z}$ 中, 规定运算 $\oplus$ 如下:
+  \[
+    \forall a, b \in \mathbb{Z}\; a \oplus b = a + b - 2.
+  \]
+  请证明: $(\mathbb{Z}, \oplus)$ 构成群。
+\end{problem}
+
+\begin{proof}
+  只需验证:
+  \begin{description}
+    \item[封闭性:] 显然 $a \oplus b \in \mathbb{Z}$。
+    \item[结合性:]
+      \begin{align*}
+        (a \oplus b) \oplus c &= (a + b - 2) \oplus c \\
+          &= a + b - 2 + c - 2 \\
+          &= a + (b + c - 2) - 2 \\
+          &= a \oplus (b \oplus c)
+      \end{align*}
+    \item[单位元:] 单位元为 2。
+      \[
+        a \oplus 2 = a + 2 - 2 = a = 2 \oplus a.
+      \]
+    \item[逆元:] $a$ 的逆元是 $4-a$。
+      \[
+        a \oplus (4 - a) = a + (4 - a) - 2 = 2 = (4 - a) \oplus a.
+      \]
+  \end{description}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $G$ 是群。
+  请证明: 如果 $\forall x \in G\; x^2 = e$,
+  则 $G$ 是交换群。
+\end{problem}
+
+\begin{proof}
+  对于任意 $a, b \in G$,
+  \begin{align*}
+    a^{2} = e &\implies a = a^{-1}, \\
+    b^{2} = e &\implies b = b^{-1}, \\
+    (ab)^{2} = e &\implies ab = (ab)^{-1}.
+  \end{align*}
+  因此,
+  \begin{align*}
+    ab = (ab)^{-1} = b^{-1} a^{-1} = ba.
+  \end{align*}
+  因此, $G$ 是交换群。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  请求出 $3^{83}$ 的最后两位数~\footnote{\url{https://www.wolframalpha.com/input/?i=3\%5E83}}。要求给出计算过程。
+\end{problem}
+
+\begin{proof}
+  首先 $(3, 100) = 1$, $\phi(100) = \phi(2^2 5^2) = 100 (1 - \frac{1}{2})(1 - \frac{1}{5}) = 40$。
+  根据 Euler's Theorem,
+  \[
+    3^{40} = 1 \mod{100}.
+  \]
+  其次,
+  \[
+    3^{83} = 3^{2 \times 40 + 3} = (3^{40})^{2} \cdot 3^{3}.
+  \]
+  因此,
+  \[
+    3^{83} \mod{100} = 27 \mod{100}.
+  \]
+  即 $3^{83}$ 的最后两位数是 $27$。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $H$ 是群 $G$ 的子群, 即 $H \le G$。
+  请证明: 对任意的 $g \in G$, 集合
+  \[
+    gHg^{-1} = \{ghg^{-1} \mid h \in H\}
+  \]
+  是 $G$ 的子群。
+\end{problem}
+
+\begin{proof}
+  记 $K = gHg^{-1}$。
+
+  \textbf{非空.} 因为 $e \in H$, 所以
+  \[
+    g e g^{-1} = e \in K.
+  \]
+
+  \textbf{封闭于取逆.} 对任意 $ghg^{-1} \in K$,
+  \[
+    (ghg^{-1})^{-1} = g h^{-1} g^{-1} \in K,
+  \]
+  因为 $h^{-1} \in H$。
+
+  \textbf{封闭于乘法.} 对任意 $gh_1g^{-1}, gh_2g^{-1} \in K$,
+  \[
+    (gh_1g^{-1})(gh_2g^{-1}) = g(h_1h_2)g^{-1} \in K,
+  \]
+  因为 $h_1h_2 \in H$。
+
+  因此, $K \le G$。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $\phi$ 是群 $G$ 到群 $G'$ 的同构映射。
+  请证明:
+  \[
+    \forall g \in G\; \text{ord } g = \text{ord } \phi(g)\text{。}
+  \]
+\end{problem}
+
+\begin{proof}
+  设 $\text{ord } g = n$。
+  则 $g^n = e$, 从而
+  \[
+    \phi(g)^n = \phi(g^n) = \phi(e) = e'.
+  \]
+  故 $\text{ord } \phi(g) \mid n$。
+
+  反设 $\text{ord } \phi(g) = m < n$。
+  则 $\phi(g)^m = e'$, 即
+  \[
+    \phi(g^m) = e' = \phi(e).
+  \]
+  因为 $\phi$ 是单射, 得 $g^m = e$, 与 $n$ 的最小性矛盾。
+
+  因此, $\text{ord } \phi(g) = n = \text{ord } g$。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  请给出循环群 $(\mathbb{Z}_{18}, +)$ 的所有生成元与所有子群。
+\end{problem}
+
+\begin{solution}
+  \textbf{生成元.}
+  在有限循环群 $(\mathbb{Z}_{18}, +)$ 中, $k$ 是生成元当且仅当 $(k, 18) = 1$。
+  故全部生成元为
+  \[
+    \set{1, 5, 7, 11, 13, 17}.
+  \]
+
+  \textbf{子群.}
+  循环群的每个子群都是循环子群, 且与 $18$ 的每个正因数一一对应。
+  对正因数 $d \mid 18$, 对应子群为
+  \[
+    \langle 18/d \rangle = \set{0, 18/d, 2 \cdot 18/d, \dots, (d-1)\cdot 18/d}.
+  \]
+  因此全部子群为
+  \begin{align*}
+    \langle 0 \rangle &= \set{0}, && |H| = 1; \\
+    \langle 9 \rangle &= \set{0, 9}, && |H| = 2; \\
+    \langle 6 \rangle &= \set{0, 6, 12}, && |H| = 3; \\
+    \langle 3 \rangle &= \set{0, 3, 6, 9, 12, 15}, && |H| = 6; \\
+    \langle 2 \rangle &= \set{0, 2, 4, 6, 8, 10, 12, 14, 16}, && |H| = 9; \\
+    \langle 1 \rangle &= \mathbb{Z}_{18}, && |H| = 18.
+  \end{align*}
+\end{solution}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设正整数 $n$ 的质因数分解为
+  \[
+    n = p_{1}^{\alpha_{1}} p_{2}^{\alpha_{2}} \cdots p_{k}^{\alpha_{k}}\text{。}
+  \]
+  其中, $p_{1}, p_{2}, \cdots, p_{k}$ 是 $n$ 的所有不同的质因数。\\[3pt]
+
+  \noindent 请证明: 循环群 $(\mathbb{Z}_{n}, +)$ 的子群的个数为
+  \[
+    (\alpha_{1} + 1)(\alpha_{2} + 1) \cdots (\alpha_{k} + 1)\text{。}
+  \]
+\end{problem}
+
+\begin{proof}
+  由循环群结构定理, $(\mathbb{Z}_n, +) \cong (\mathbb{Z}_n, +)$ 的每个子群都形如
+  \[
+    \langle d \rangle = \set{kd \bmod n \mid k \in \mathbb{Z}}
+  \]
+  对某个 $d \mid n$, 且不同的 $d$ 给出不同的子群。
+
+  因而子群个数等于 $n$ 的正因数个数。
+  而若
+  \[
+    n = p_1^{\alpha_1} p_2^{\alpha_2} \cdots p_k^{\alpha_k},
+  \]
+  则正因数个数为
+  \[
+    (\alpha_1 + 1)(\alpha_2 + 1) \cdots (\alpha_k + 1).
+  \]
+  得证。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+% \begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}

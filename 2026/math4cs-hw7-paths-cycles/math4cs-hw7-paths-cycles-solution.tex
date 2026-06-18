@@ -1,0 +1,239 @@
+% math4cs-hw7-paths-cycles-solution.tex
+
+% !TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%
+% see http://mirrors.concertpass.com/tex-archive/macros/latex/contrib/tufte-latex/sample-handout.pdf
+% for how to use tufte-handout
+\documentclass[a4paper, justified]{tufte-handout}
+
+\input{hw-preamble} % feel free to modify this file if you understand LaTeX well
+%%%%%%%%%%%%%%%%%%%%
+\title{计算机数学 (8-paths-cycles: 路径与圈)}
+\me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
+\date{2026年5月15日}
+%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%
+\noplagiarism % PLEASE DON'T DELETE THIS LINE!
+%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%
+\beginrequired
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $G = (V, E)$ 是无向图 (不一定是简单无向图),
+  其中 $|E| = m$。
+  请证明\footnote{这也说明了, $G$ 中度数为奇数的顶点数目为偶数。},
+  \[
+    \sum_{v \in V} \deg(v) = 2m.
+  \]
+\end{problem}
+
+\begin{proof}
+  每条边贡献了 2 度。所以~\footnote{这也被称为 ``握手定理''。},
+  \[
+    \sum_{v \in V} \deg(v) = 2m.
+  \]
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  \begin{enumerate}[(1)]
+    \item 请证明: 每个 $u\-v$ 闭道路 (closed walk) 都包含一个 $u\-v$ 路径 (path)。
+    \item 请证明: 每个长度为奇数的闭道路 (closed walk) 都包含一个长度为奇数的圈 (cycle)~\footnote{
+    ``长度''就是所含边的条数。}。
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent (提示: 可用数学归纳法。如果你使用数学归纳法, 请注意数学归纳法的书写规范。)
+\end{problem}
+
+\begin{proof}
+  \begin{enumerate}[(1)]
+    \item 设 $W$ 是一条 $u\-v$ 闭道路。若 $W$ 中除起点/终点外没有重复顶点, 则 $W$ 本身就是一条 $u\-v$ 路径。
+
+      否则, 设 $x$ 是 $W$ 中首次重复出现的顶点 (除 $u=v$ 外)。
+      将 $W$ 在 $x$ 处拆成两条 $x\-x$ 闭道路 $W_1, W_2$。
+      其中较短的一条 (或任一条) 仍可用归纳思想缩短:
+      不断删除 ``来回折返'' 的形如 $\dots, a, b, a, \dots$ 的片段, 直到没有重复顶点为止。
+      最终得到一条 $u\-v$ 路径。
+
+    \item 对闭道路的长度 $l$ 作强数学归纳。
+      \begin{description}
+        \item[基础步骤:] $l = 1$。长度为 1 的闭道路即是长度为 1 的圈。显然成立。
+        \item[归纳假设:] 假设每个长度为奇数 $1 \le l < k$ ($k$ 为奇数)
+          的闭道路都包含一个长度为奇数的圈。
+        \item[归纳步骤:] 考虑长度为奇数 $k > 1$ 的闭道路 $W$。
+          分两种情况讨论:
+          \begin{itemize}
+            \item 如果 $W$ 中不包含重复顶点 (除了起点与终点), 则 $W$ 即为长度为奇数的圈。
+            \item 不妨设 $W$ 中包含重复顶点 (除了起点与终点) $v$.
+              $W$ 可看作两条起点、终点均为 $v$ 的闭道路。
+              其中必有一条的长度为奇数, 记该闭道路为 $U$, 长度为 $u$,
+              有 $1 \le u < k$。根据归纳假设, $U$ 中包含一个长度为奇数的圈。
+          \end{itemize}
+      \end{description}
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  设 $G$ 是一个简单无向图 (undirected simple graph) 且满足
+  \[
+    \delta(G) \ge k,
+  \]
+  其中 $k \in \mathbb{N}^{+}$ 为常数。
+  请证明:
+  \begin{enumerate}[(1)]
+    \item $G$ 包含长度 $\ge k$ 的路径;
+    \item 如果 $k \ge 2$, 则 $G$ 包含长度 $\ge k + 1$ 的圈。
+  \end{enumerate}
+  提示: By Extermality。
+\end{problem}
+
+\begin{proof}
+  \begin{enumerate}[(1)]
+    \item 考虑 $G$ 中的一条极大路径 $P$。设 $u$ 是 $P$ 的一个端点。
+      因为 $P$ 是极大路径, $u$ 的所有邻居顶点都在 $P$ 上。
+      因为 $\deg(u) \ge \delta(G) \ge k$ 且 $G$ 是简单图,
+      所以除了端点 $u$, $P$ 至少还包含 $k$ 个顶点。
+      故, $P$ 的长度 $\ge k$。
+    \item 假设 $k \ge 2$。设 $v$ 是 $u$ 的邻居顶点中距离 $u$ 最远
+      (在顺着路径 $P$ 的意义下) 的顶点。则边 $\set{u, v}$ 以及
+      路径 $P$ 中从 $u$ 到 $v$ 的一段子路径构成了长度 $\ge k + 1$ 的圈。
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  考虑下图, 记为 $G$。
+  \fig{width = 0.40\textwidth}{figs/Euler-graph}
+  \begin{enumerate}[(1)]
+    \item $G$ 是否是欧拉图? 请说明理由。
+    \item 如果是欧拉图, 请将其分解为若干圈的组合, 并给出一个欧拉回路。
+    　(可以自行为顶点编号, 也可以使用图上边的编号描述回路。)
+  \end{enumerate}
+\end{problem}
+
+\begin{proof}
+  \begin{enumerate}[(1)]
+    \item $G$ 是欧拉图。因为 $G$ 中每个顶点的度数都是偶数。
+    \item 可将 $G$ 分解成如下三个圈的组合:
+      \begin{itemize}
+        \item $A-B-F-H-K$
+        \item $C-G-J$
+        \item $D-E-I$
+      \end{itemize}
+      一个欧拉回路: $A-B-C-D-E-F-G-H-I-J-K$。
+  \end{enumerate}
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  请判断下图 $G$ 是否是 Hamilton 图 (Hamiltonian graph), 并说明理由。
+  \fig{width = 0.30\textwidth}{figs/Hamiltonian}
+\end{problem}
+
+\begin{proof}
+  $G$ 是 Hamilton 图。
+
+  该图可看作广义 Petersen 图 $GP(8, 3)$:
+  外层 8 个顶点构成圈 $u_0u_1\cdots u_7u_0$,
+  内层 8 个顶点通过 ``隔 3 连边'' 构成圈 $v_0v_3v_6v_1v_4v_7v_2v_5v_0$,
+  且每个 $u_i$ 与 $v_i$ 相连。
+
+  一个 Hamilton 圈为
+  \[
+    u_0, v_0, v_3, u_3, u_4, v_4, v_7, u_7, u_6, v_6, v_1, u_1, u_2, v_2, v_5, u_5, u_0.
+  \]
+  它经过每个顶点恰好一次并回到起点, 故 $G$ 是 Hamilton 图。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%
+\begin{problem}
+  在圆周上取 $n$ 个点。
+  将每个点与圆周上两个方向上各自距离它最近的两个点相连,
+  得到一个 $4$-正则图 $G_n$。
+
+  \noindent 请证明: 当 $n \ge 5$ 时, $G_n$ 可以表示为两个 Hamilton 圈的并。
+\end{problem}
+
+\begin{proof}
+  将圆周上的点记为 $v_0, v_1, \dots, v_{n-1}$ (下标模 $n$)。
+  则 $G_n$ 的边集为
+  \[
+    E(G_n) = \set{\set{v_i, v_{i+1}}, \set{v_i, v_{i+2}} \mid 0 \le i \le n-1}.
+  \]
+  换言之, $G_n = \mathrm{Circ}(n, \set{1, 2})$。
+
+  先令
+  \[
+    H_1 = (v_0, v_1, v_2, \dots, v_{n-1}, v_0),
+  \]
+  它使用全部 ``距离为 1'' 的边, 因而是一条 Hamilton 圈。
+
+  \begin{enumerate}[(1)]
+    \item 若 $n$ 为奇数, 则 $\gcd(n, 2) = 1$。
+      再令
+      \[
+        H_2 = (v_0, v_2, v_4, \dots, v_{n-1}, v_0),
+      \]
+      其中每一步都沿 ``距离为 2'' 的边前进。
+      由于 $\gcd(n, 2) = 1$, 该序列依次访问全部 $n$ 个顶点并回到 $v_0$,
+      故 $H_2$ 也是 Hamilton 圈。
+      又 $H_2$ 只使用 ``距离为 2'' 的边, 与 $H_1$ 边不交, 故
+      \[
+        E(G_n) = E(H_1) \sqcup E(H_2).
+      \]
+
+      例如 $n = 5$ 时,
+      \[
+        H_1 = (v_0, v_1, v_2, v_3, v_4, v_0),
+        \qquad
+        H_2 = (v_0, v_2, v_4, v_1, v_3, v_0).
+      \]
+
+    \item 若 $n$ 为偶数, 则 ``距离为 2'' 的边不再单独构成一条 Hamilton 圈,
+      需要把 ``距离为 1'' 与 ``距离为 2'' 的边混合使用。
+      此时可采用如下交替构造 (以 $n = 2m$ 为例):
+      \[
+        H_2 = (v_0, v_2, v_4, \dots, v_{n-2}, v_{n-1}, v_{n-3}, \dots, v_1, v_0).
+      \]
+      直观地说, 先在偶数顶点间以步长 $2$ 前进, 再用一条 ``距离为 1'' 的边跳到 $v_{n-1}$,
+      再在奇数顶点间以步长 $-2$ 返回, 最后回到 $v_0$。
+      直接验算可知 $H_2$ 是 Hamilton 圈, 且与 $H_1$ 边不交。
+      因此仍有 $E(G_n) = E(H_1) \sqcup E(H_2)$。
+  \end{enumerate}
+
+  综上, 当 $n \ge 5$ 时, $G_n$ 都可表示为两个 Hamilton 圈的并。
+\end{proof}
+%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有需要订正的题目，可以把这部分删掉
+
+\begincorrection
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+% 如果没有反馈，可以把这部分删掉
+\beginfb
+
+你可以写 (也可以发邮件)
+\begin{itemize}
+  \item 对课程及教师的建议与意见
+  \item 教材中不理解的内容
+  \item 希望深入了解的内容
+  \item $\cdots$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
