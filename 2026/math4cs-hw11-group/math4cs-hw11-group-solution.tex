@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%
 \title{计算机数学 (12-groups: 群论)}
 \me{魏恒峰}{hfwei@hnu.edu.cn}{}{}
-\date{2026年6月11日}
+\date{2026年6月11日 发布作业 \qquad 2026年6月19日 发布答案}
 %%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \maketitle
@@ -112,23 +112,19 @@
 
 \begin{proof}
   记 $K = gHg^{-1}$。
+  由子群判定定理, 只需证明 $K \neq \emptyset$, 且对任意 $x, y \in K$ 有 $xy^{-1} \in K$。
 
-  \textbf{非空.} 因为 $e \in H$, 所以
-  \[
-    g e g^{-1} = e \in K.
-  \]
+  因为 $e \in H$, 所以 $g e g^{-1} = e \in K$, 故 $K \neq \emptyset$。
 
-  \textbf{封闭于取逆.} 对任意 $ghg^{-1} \in K$,
+  设 $x = gh_1g^{-1}$, $y = gh_2g^{-1}$, 其中 $h_1, h_2 \in H$。
+  则
   \[
-    (ghg^{-1})^{-1} = g h^{-1} g^{-1} \in K,
+    xy^{-1}
+    = (gh_1g^{-1})(gh_2g^{-1})^{-1}
+    = gh_1g^{-1} \cdot g h_2^{-1} g^{-1}
+    = g(h_1 h_2^{-1})g^{-1}.
   \]
-  因为 $h^{-1} \in H$。
-
-  \textbf{封闭于乘法.} 对任意 $gh_1g^{-1}, gh_2g^{-1} \in K$,
-  \[
-    (gh_1g^{-1})(gh_2g^{-1}) = g(h_1h_2)g^{-1} \in K,
-  \]
-  因为 $h_1h_2 \in H$。
+  因为 $H \le G$, 所以 $h_1 h_2^{-1} \in H$, 从而 $xy^{-1} \in K$。
 
   因此, $K \le G$。
 \end{proof}
