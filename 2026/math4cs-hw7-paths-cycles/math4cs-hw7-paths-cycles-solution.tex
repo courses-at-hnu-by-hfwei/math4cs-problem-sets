@@ -55,8 +55,7 @@
 
 \begin{proof}
   \begin{enumerate}[(1)]
-    \item \textbf{[无 Solution]}
-      闭道路两端相同, 故可设 $u = v$。
+    \item 闭道路两端相同, 故可设 $u = v$。
       设 $W = (v_0, v_1, \ldots, v_k)$ 为长度 $k$ 的 $u\-u$ 闭道路 ($v_0 = v_k = u$)。
       对 $k$ 作强数学归纳, 证明每个这样的闭道路都包含一条 $u\-u$ 路径。
 
@@ -152,7 +151,7 @@
 %%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%
-\begin{problem}[无 Solution]
+\begin{problem}
   请判断下图 $G$ 是否是 Hamilton 图 (Hamiltonian graph), 并说明理由。
   \fig{width = 0.30\textwidth}{figs/Hamiltonian}
 \end{problem}
@@ -160,7 +159,6 @@
 \begin{proof}
   $G$ 是 Hamilton 图。
 
-  该图可看作广义 Petersen 图 $GP(8, 2)$:
   外层 8 个顶点构成圈 $u_0u_1\cdots u_7u_0$,
   内层 8 个顶点通过 ``隔 2 连边'' 分成两个圈
   $v_0v_2v_4v_6v_0$ 与 $v_1v_3v_5v_7v_1$,
@@ -175,7 +173,7 @@
 %%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%
-\begin{problem}[无 Solution]
+\begin{problem}
   在圆周上取 $n$ 个点。
   将每个点与圆周上两个方向上各自距离它最近的两个点相连,
   得到一个 $4$-正则图 $G_n$。
@@ -184,27 +182,25 @@
 \end{problem}
 
 \begin{proof}
-  将圆周上的点记为 $v_0, v_1, \dots, v_{n-1}$ (下标模 $n$)。
+  将圆周上的点记为 $v_0, v_1, \dots, v_{n-1}$。
   则 $G_n$ 的边集为
   \[
     E(G_n) = \set{\set{v_i, v_{i+1}}, \set{v_i, v_{i+2}} \mid 0 \le i \le n-1}.
   \]
-  换言之, $G_n = \mathrm{Circ}(n, \set{1, 2})$。
 
-  先令
-  \[
-    H_1 = (v_0, v_1, v_2, \dots, v_{n-1}, v_0),
-  \]
-  它使用全部 ``距离为 1'' 的边, 因而是一条 Hamilton 圈。
 
   \begin{enumerate}[(1)]
-    \item 若 $n$ 为奇数, 则 $\gcd(n, 2) = 1$。
-      再令
+    \item $n$ 为奇数。
+      令
+      \[
+        H_1 = (v_0, v_1, v_2, \dots, v_{n-1}, v_0),
+      \]
+      它使用全部 ``距离为 1'' 的边, 因而是一条 Hamilton 圈。
       \[
         H_2 = (v_0, v_2, v_4, \dots, v_{n-1}, v_0),
       \]
       其中每一步都沿 ``距离为 2'' 的边前进。
-      由于 $\gcd(n, 2) = 1$, 该序列依次访问全部 $n$ 个顶点并回到 $v_0$,
+      该序列依次访问全部 $n$ 个顶点并回到 $v_0$,
       故 $H_2$ 也是 Hamilton 圈。
       又 $H_2$ 只使用 ``距离为 2'' 的边, 与 $H_1$ 边不交, 故
       \[
@@ -218,7 +214,7 @@
         H_2 = (v_0, v_2, v_4, v_1, v_3, v_0).
       \]
 
-    \item 若 $n$ 为偶数, 则 $\gcd(n, 2) = 2$,
+    \item $n$ 为偶数。
       ``距离为 2'' 的边只能组成两个长为 $n/2$ 的圈, 不能再单独取一条 Hamilton 圈。
       此时需把两类边混合使用。令
       \[
@@ -235,30 +231,7 @@
         \qquad
         H_2 = (v_0, v_2, v_4, v_3, v_1, v_5, v_0).
       \]
-
-      下面说明 $E(G_n) = E(H_1) \sqcup E(H_2)$。
-      记
-      \[
-        E_1 = \set{\set{v_i, v_{i+1}} \mid 0 \le i \le n-1},
-        \qquad
-        E_2 = \set{\set{v_i, v_{i+2}} \mid 0 \le i \le n-1}.
-      \]
-      则 $E(G_n) = E_1 \sqcup E_2$, 且 $|E_1| = |E_2| = n$。
-
-      \emph{第一步: $H_1$ 与 $H_2$ 边不交。}
-      直接比较两条闭链可知, 它们没有公共边。
-
-      \emph{第二步: $E(H_1) \cup E(H_2) = E(G_n)$。}
-      在 $H_1$ 中, 除 $\set{v_{n-3}, v_{n-2}}$ 外,
-      $E_1$ 中其余 $n-1$ 条边都出现一次;
-      另外还出现 $E_2$ 中的
-      $\set{v_{n-3}, v_{n-1}}$ 与 $\set{v_{n-2}, v_0}$。
-      在 $H_2$ 中, 恰好补上 $\set{v_{n-3}, v_{n-2}}$ 与 $\set{v_{n-1}, v_0}$,
-      并覆盖 $E_2$ 中其余 $n-2$ 条边。
-      因此 $E(G_n) = E(H_1) \sqcup E(H_2)$。
   \end{enumerate}
-
-  综上, 当 $n \ge 5$ 时, $G_n$ 都可表示为两个 Hamilton 圈的并。
 \end{proof}
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
